@@ -11,14 +11,33 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 		private ENodeType nodeType;
 		[SerializeField]
 		private IGridBehaviour behaviour;
+		private HashSet<GridNode> nodes;
 		public Color color;
 
 		public ENodeType NodeType => nodeType;
 
+		public void Init()
+		{
+			nodes = new HashSet<GridNode>();
+		}
+
+		public void AddNode(GridNode n)
+		{
+			nodes.Add(n);
+		}
+
+		public void RemoveNode(GridNode n)
+		{
+			nodes.Remove(n);
+		}
+
 		public void Update()
 		{
 			if (behaviour)
-				behaviour.Behaviour();
+			{
+				foreach (GridNode n in nodes)
+					behaviour.Behaviour(n);
+			}
 		}
 	}
 }

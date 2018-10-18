@@ -7,8 +7,12 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 	[CreateAssetMenu(fileName = "Rotate", menuName = "Rotate")]
 	public class Rotate : IGridBehaviour
 	{
-		public override void Behaviour()
+		[SerializeField]
+		private float angle;
+
+		public override void Behaviour(GridNode n)
 		{
+			n.transform.Rotate(Vector3.up, angle * Time.deltaTime);
 		}
 	}
 }

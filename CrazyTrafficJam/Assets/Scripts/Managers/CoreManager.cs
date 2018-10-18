@@ -10,6 +10,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		private AManager[] managers;
 		private IUpdatable[] updatableManager;
 		private IInitializable[] initializableManager;
+		private ICleanable[] cleanableManager;
 
 		private static CoreManager instance;
 		public static CoreManager Instance => instance;
@@ -23,31 +24,18 @@ namespace IronSideStudio.CrazyTrafficJam
 				managers[i].Construct();
 			}
 
-			updatableManager = GetUpdatable();
-			initializableManager = GetInitializable();
+			updatableManager = GetInterface<IUpdatable>();
+			initializableManager = GetInterface<IInitializable>();
+			cleanableManager = GetInterface<ICleanable>();
 		}
 
-		private IUpdatable[] GetUpdatable()
+		private T[] GetInterface<T>() where T : class
 		{
-			List<IUpdatable> templateList = new List<IUpdatable>();
+			List<T> templateList = new List<T>();
 
 			for (int i = 0 ; i < managers.Length ; ++i)
 			{
-				IUpdatable t = managers[i] as IUpdatable;
-				if (t != null)
-					templateList.Add(t);
-
-			}
-			return templateList.ToArray();
-		}
-
-		private IInitializable[] GetInitializable()
-		{
-			List<IInitializable> templateList = new List<IInitializable>();
-
-			for (int i = 0 ; i < managers.Length ; ++i)
-			{
-				IInitializable t = managers[i] as IInitializable;
+				T t = managers[i] as T;
 				if (t != null)
 					templateList.Add(t);
 
@@ -70,6 +58,14 @@ namespace IronSideStudio.CrazyTrafficJam
 			{
 				if (updatableManager[i].Enable)
 					updatableManager[i].MUpdate();
+			}
+		}
+
+		private void OnDestroy()
+		{
+			for (int i = 0 ; i < cleanableManager.Length ; ++i)
+			{
+				cleanableManager[i].Clean();
 			}
 		}
 

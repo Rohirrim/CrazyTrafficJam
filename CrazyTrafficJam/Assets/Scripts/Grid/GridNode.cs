@@ -11,24 +11,18 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 		private GridNodeType currentType;
 		public ENodeType NodeType => currentType.NodeType;
 
-		public void Initialize(int x, int y)
+		public void Initialize(int x, int z)
 		{
-			name = "GridNode " + x + ", " + y;
-			transform.position = new Vector3(x, 0f, y);
+			name = "GridNode " + x + ", " + z;
+			transform.position = new Vector3(x, 0f, z);
 			SetType(ENodeType.None);
 
-			CoreManager.Instance.GetManager<InputManager>().AddOnTouchDown(MouseDown);
+			CoreManager.Instance.GetManager<InputManager>().AddOnTouchClick(TouchDown);
 		}
 
 		private void OnDestroy()
 		{
-			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchDown(MouseDown);
-		}
-
-		private void Update()
-		{
-			if (currentType.NodeType != ENodeType.None)
-				currentType.Update();
+			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
 		}
 
 		public Vector3 GetPosition()
@@ -42,6 +36,8 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			{
 				if (t.NodeType == newType)
 				{
+					currentType?.RemoveNode(this);
+					t.AddNode(this);
 					currentType = t;
 					gameObject.GetComponent<Renderer>().material.color = t.color;
 					break;
@@ -51,12 +47,22 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			InvokeOnChangeType();
 		}
 
-		private void MouseDown(SInputTouch touch)
+		private void TouchDown(SInputTouch touch)
 		{
 			if (touch.overGUI || touch.gameObject != gameObject)
 				return;
 
 			InvokeOnSelect();
+		}
+
+		public SaveGridNode Save()
+		{
+			SaveGridNode save = new SaveGridNode() {
+				position = transform.position,
+				type = NodeType
+			};
+
+			return save;
 		}
 
 		#region Events

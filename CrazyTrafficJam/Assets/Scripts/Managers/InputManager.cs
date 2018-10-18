@@ -10,6 +10,12 @@ namespace IronSideStudio.CrazyTrafficJam
 		[SerializeField]
 		private Camera mainCamera;
 
+		private SInputTouch dataDown;
+		private SInputTouch dataUp;
+
+		private Vector3 mousePosition;
+		private Vector3 oldPosition;
+
 		public override void Construct()
 		{
 			enabled = true;
@@ -17,19 +23,36 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		public void MUpdate()
 		{
+			mousePosition = Input.mousePosition;
 #if UNITY_STANDALONE_WIN
 			if (Input.GetMouseButtonDown(0))
-				TouchDown(Input.mousePosition);
+			{
+				oldPosition = mousePosition;
+				TouchDown(mousePosition);
+			}
 			else if (Input.GetMouseButtonUp(0))
-				TouchUp(Input.mousePosition);
+			{
+				TouchUp(mousePosition);
+				if (dataDown.gameObject == dataUp.gameObject && dataDown.overGUI == dataUp.overGUI && dataDown.screenPosition == dataUp.screenPosition)
+					TouchClick();
+			}
 			else if (Input.GetMouseButton(0))
-				TouchMove(Input.mousePosition);
+			{
+				TouchMove(mousePosition);
+			}
+
+			if (Vector3.Distance(mousePosition, oldPosition) <= 10.0f)
+			{
+				MouseMove(mousePosition);
+				oldPosition = mousePosition;
+			}
 #endif
 		}
 
 		private void TouchDown(Vector3 position)
 		{
-			InvokeOnTouchDown(CreateTouchData(position));
+			dataDown = CreateTouchData(position);
+			InvokeOnTouchDown(dataDown);
 		}
 
 		private void TouchMove(Vector3 position)
@@ -39,6 +62,17 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void TouchUp(Vector3 position)
 		{
+			dataUp = CreateTouchData(position);
+			InvokeOnTouchUp(dataUp);
+		}
+
+		private void TouchClick()
+		{
+			InvokeOnTouchClick(dataUp);
+		}
+
+		private void MouseMove(Vector3 position)
+		{
 			InvokeOnTouchUp(CreateTouchData(position));
 		}
 
@@ -46,10 +80,10 @@ namespace IronSideStudio.CrazyTrafficJam
 		{
 			Ray ray = mainCamera.ScreenPointToRay(position);
 			RaycastHit hit;
-			Physics.Raycast(ray, out hit, 50f);
+			Physics.Raycast(ray, out hit);
 
 			SInputTouch touch = new SInputTouch {
-				worldPosition = mainCamera.ScreenToWorldPoint(position),
+				worldPosition = hit.point,
 				screenPosition = position,
 				overGUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(),
 				gameObject = hit.transform ? hit.transform.gameObject : null
@@ -63,6 +97,9 @@ namespace IronSideStudio.CrazyTrafficJam
 		private event InputDelegate OnTouchDown;
 		private event InputDelegate OnTouchMove;
 		private event InputDelegate OnTouchUp;
+		private event InputDelegate OnTouchClick;
+
+		private event InputDelegate OnMouseMove;
 
 		#region OnTouchDown
 		public void AddOnTouchDown(InputDelegate func)
@@ -112,6 +149,40 @@ namespace IronSideStudio.CrazyTrafficJam
 		private void InvokeOnTouchUp(SInputTouch touch)
 		{
 			OnTouchUp?.Invoke(touch);
+		}
+		#endregion
+
+		#region OnTouchClick
+		public void AddOnTouchClick(InputDelegate func)
+		{
+			OnTouchClick += func;
+		}
+
+		public void RemoveOnTouchClick(InputDelegate func)
+		{
+			OnTouchClick -= func;
+		}
+
+		private void InvokeOnTouchClick(SInputTouch touch)
+		{
+			OnTouchClick?.Invoke(touch);
+		}
+		#endregion
+
+		#region OnMouseMove
+		public void AddOnMouseMove(InputDelegate func)
+		{
+			OnMouseMove += func;
+		}
+
+		public void RemoveOnMouseMove(InputDelegate func)
+		{
+			OnMouseMove -= func;
+		}
+
+		private void InvokeOnMouseMove(SInputTouch touch)
+		{
+			OnMouseMove?.Invoke(touch);
 		}
 		#endregion
 		#endregion

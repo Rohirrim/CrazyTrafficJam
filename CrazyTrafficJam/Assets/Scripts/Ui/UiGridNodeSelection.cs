@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 namespace IronSideStudio.CrazyTrafficJam.UI
 {
-	public class UiGridNodeSelection : MonoBehaviour
+	public class UiGridNodeSelection : MonoBehaviour, IInitializable, ICleanable
 	{
 		[SerializeField]
 		private Button[] typeSelection;
 		private GridNode.GridNode gridNodeSelected;
 
-		private void Start()
+		public void Initialize()
 		{
 			CoreManager.Instance.GetManager<InputManager>().AddOnTouchDown(MouseDown);
 			GridNode.GridNode[] nodes = CoreManager.Instance.GetManager<GridNode.GridManager>().GetGridNodes();
@@ -29,9 +29,10 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 					gameObject.SetActive(false);
 				});
 			}
+			gameObject.SetActive(false);
 		}
 
-		private void OnDestroy()
+		public void Clean()
 		{
 			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchDown(MouseDown);
 			GridNode.GridNode[] nodes = CoreManager.Instance.GetManager<GridNode.GridManager>().GetGridNodes();
@@ -58,6 +59,8 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		private void MouseDown(SInputTouch touch)
 		{
+			if (touch.overGUI)
+				return;
 			if (touch.gameObject == null)
 				gameObject.SetActive(false);
 		}

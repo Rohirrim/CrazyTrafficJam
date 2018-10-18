@@ -6,6 +6,6 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 {
 	public abstract class IGridBehaviour : ScriptableObject
 	{
-		public abstract void Behaviour();
+		public abstract void Behaviour(GridNode n);
 	}
 }
