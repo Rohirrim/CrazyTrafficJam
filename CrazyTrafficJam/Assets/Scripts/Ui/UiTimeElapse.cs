@@ -20,36 +20,25 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			weekElapse.text = "0";
 
 			TimeManager time = CoreManager.Instance.GetManager<TimeManager>();
-			time.AddOnHourPass(HourPass);
-			time.AddOnDayPass(DayPass);
-			time.AddOnWeekPass(WeekPass);
+			time.AddOnHourPass(TimePass);
 		}
 
 		public void Clean()
 		{
 			TimeManager time = CoreManager.Instance.GetManager<TimeManager>();
-			time.RemoveOnHourPass(HourPass);
-			time.RemoveOnDayPass(DayPass);
-			time.RemoveOnWeekPass(WeekPass);
+			time.RemoveOnHourPass(TimePass);
 		}
 
-		private void HourPass(float value, EDay currentDay)
+		private void TimePass(SDayInfo dayInfo)
 		{
-			float percent = value / 23.99f;
+			float percent = dayInfo.hour / 24f;
 
 			Vector3 angle = Vector3.zero;
-			angle.z = Mathf.Lerp(0, -360, percent) + 90f;
+			angle.z = Mathf.Lerp(0, -720, percent) + 90f;
 			pointer.eulerAngles = angle;
-		}
 
-		private void DayPass(float value, EDay currentDay)
-		{
-			dayElapse.text = currentDay.ToString();
-		}
-
-		private void WeekPass(float value, EDay currentDay)
-		{
-			weekElapse.text = value.ToString();
+			dayElapse.text = dayInfo.day.ToString();
+			weekElapse.text = dayInfo.week.ToString();
 		}
 	}
 }

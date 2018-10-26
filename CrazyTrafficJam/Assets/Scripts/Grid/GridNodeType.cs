@@ -4,19 +4,17 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam.GridNode
 {
-	[CreateAssetMenu(fileName = "GridNodeType", menuName = "GridNodeType")]
+	//[CreateAssetMenu(fileName = "GridNodeType", menuName = "GridNodeType")]
 	public class GridNodeType : ScriptableObject
 	{
 		[SerializeField]
-		private ENodeType nodeType;
-		[SerializeField]
-		private IGridBehaviour behaviour;
-		private HashSet<GridNode> nodes;
+		protected ENodeType nodeType;
+		protected HashSet<GridNode> nodes;
 		public Color color;
 
 		public ENodeType NodeType => nodeType;
 
-		public void Init()
+		public virtual void Init()
 		{
 			nodes = new HashSet<GridNode>();
 		}
@@ -33,11 +31,11 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 
 		public void Update()
 		{
-			if (behaviour)
-			{
-				foreach (GridNode n in nodes)
-					behaviour.Behaviour(n);
-			}
+			foreach (GridNode n in nodes)
+				Behaviour(n);
 		}
+
+		protected virtual void Behaviour(GridNode gridNode)
+		{ }
 	}
 }

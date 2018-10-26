@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7823269bde124be409ae6155d0169784, type: 3}
-  m_Name: Rotate
+  m_Script: {fileID: 11500000, guid: c03048da1cf6ac94f8e7db77db6b1293, type: 3}
+  m_Name: Car
   m_EditorClassIdentifier: 
-  angle: 0
+  carPrefab: {fileID: 1593005181346628, guid: baf3790d4d1c6c842951ea2cc1858b20, type: 2}

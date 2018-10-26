@@ -13,13 +13,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Initialize()
 		{
-			CoreManager.Instance.GetManager<InputManager>().AddOnTouchDown(MouseDown);
-			GridNode.GridNode[] nodes = CoreManager.Instance.GetManager<GridNode.GridManager>().GetGridNodes();
-
-			for (int i = 0 ; i < nodes.Length ; ++i)
-			{
-				nodes[i].AddOnSelect(SelectGridNode);
-			}
+			CoreManager.Instance.GetManager<InputManager>().AddOnTouchClick(TouchDown);
 
 			for (int i = 0 ; i < typeSelection.Length ; ++i)
 			{
@@ -34,20 +28,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Clean()
 		{
-			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchDown(MouseDown);
-			GridNode.GridNode[] nodes = CoreManager.Instance.GetManager<GridNode.GridManager>().GetGridNodes();
-
-			for (int i = 0 ; i < nodes.Length ; ++i)
-			{
-				nodes[i].RemoveOnSelect(SelectGridNode);
-			}
-		}
-
-		private void SelectGridNode(GridNode.GridNode selectedNode)
-		{
-			gameObject.SetActive(true);
-			gridNodeSelected = selectedNode;
-			transform.position = Camera.main.WorldToScreenPoint(selectedNode.GetPosition() + Vector3.up * .5f);
+			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
 		}
 
 		private void ChangeType(ENodeType nodeType)
@@ -57,12 +38,21 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			gridNodeSelected.SetType(nodeType);
 		}
 
-		private void MouseDown(SInputTouch touch)
+		private void TouchDown(SInputTouch touch)
 		{
 			if (touch.overGUI)
 				return;
 			if (touch.gameObject == null)
+			{
 				gameObject.SetActive(false);
+				return;
+			}
+			gridNodeSelected = touch.gameObject.GetComponent<GridNode.GridNode>();
+			if (gridNodeSelected)
+			{
+				gameObject.SetActive(gridNodeSelected.NodeType == ENodeType.Intersection);
+				transform.position = Camera.main.WorldToScreenPoint(gridNodeSelected.GetPosition() + Vector3.up * .5f);
+			}
 		}
 	}
 }

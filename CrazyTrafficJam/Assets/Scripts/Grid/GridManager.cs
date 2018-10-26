@@ -82,7 +82,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 				SaveGridNode node = save.crossPoints[i];
 				RaycastHit hit;
 
-				if (Physics.Raycast(node.position + Vector3.up, Vector3.down, out hit))
+				if (Physics.Raycast(node.position + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
 				{
 					GridNode gridNode = hit.transform.GetComponent<GridNode>();
 					if (gridNode == null)

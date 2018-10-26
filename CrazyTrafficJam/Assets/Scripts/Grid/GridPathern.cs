@@ -28,7 +28,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 		{
 			RaycastHit hit;
 			GridNode gridRoot;
-			if (!Physics.Raycast(positionStart + Vector3.up, Vector3.down, out hit))
+			if (!Physics.Raycast(positionStart + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
 				return false;
 			gridRoot = hit.transform.GetComponent<GridNode>();
 			if (gridRoot.NodeType != ENodeType.District)
@@ -61,7 +61,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			RaycastHit hit;
 			foreach (SInfo n in nodes)
 			{
-				if (!Physics.Raycast(positionStart + n.position + Vector3.up, Vector3.down, out hit))
+				if (!Physics.Raycast(positionStart + n.position + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
 					return false;
 				GridNode gridNode = hit.transform.GetComponent<GridNode>();
 				if (gridNode == null)
@@ -97,7 +97,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 
 			foreach (SInfo n in nodes)
 			{
-				if (Physics.Raycast(positionStart + n.position + offset + Vector3.up, Vector3.down, out hit))
+				if (Physics.Raycast(positionStart + n.position + offset + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
 				{
 					GridNode gridNode = hit.transform.GetComponent<GridNode>();
 					if (gridNode == null)

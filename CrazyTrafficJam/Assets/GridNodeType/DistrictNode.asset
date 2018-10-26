@@ -8,9 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e4d2821cbc175a468e1c1d290fdf732, type: 3}
-  m_Name: District
+  m_Script: {fileID: 11500000, guid: f80b95acad301f04baa70bb1f4dd1cec, type: 3}
+  m_Name: DistrictNode
   m_EditorClassIdentifier: 
   nodeType: 1
-  behaviour: {fileID: 11400000, guid: 5eeb935a27e163444b86b2bef698c409, type: 2}
-  color: {r: 0.11724138, g: 0, b: 1, a: 1}
+  color: {r: 0, g: 0, b: 1, a: 1}
+  spawnInfo:
+  - day: 31
+    type: {fileID: 11400000, guid: 6a9f83ed97f62594bbc96e557549c7c4, type: 2}

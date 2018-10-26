@@ -6,38 +6,45 @@ namespace IronSideStudio.CrazyTrafficJam
 {
 	public enum EDay
 	{
-		Monday,
-		Tuesday,
-		Wednesday,
-		Thursday,
-		Friday,
-		Saturday,
-		Sunday
+		Monday = 1 << 0,
+		Tuesday = 1 << 1,
+		Wednesday = 1 << 2,
+		Thursday = 1 << 3,
+		Friday = 1 << 4,
+		Saturday = 1 << 5,
+		Sunday = 1 << 6
+	}
+
+	public struct SDayInfo
+	{
+		public int week;
+		public EDay day;
+		public int hour;
 	}
 
 	public class TimeManager : AManager, IInitializable, IUpdatable, ICleanable
 	{
 		[SerializeField]
 		private float dayTime;
-		private float currentHour;
-		private EDay currentDay;
 
-		private float f;
-		private int week;
+		private float t;
 		private int day;
+		private SDayInfo dayInfo;
 
 		public bool Enable { get { return enabled; } }
 
 		public override void Construct()
 		{
-
+			dayInfo = new SDayInfo();
 		}
 
 		public void Initialize()
 		{
+			dayInfo.hour = 0;
+			dayInfo.day = EDay.Monday;
+			dayInfo.week = 0;
+
 			day = 0;
-			week = 0;
-			currentDay = EDay.Monday;
 		}
 
 		public void Clean()
@@ -45,30 +52,34 @@ namespace IronSideStudio.CrazyTrafficJam
 			OnHourPass = null;
 			OnDayPass = null;
 			OnWeekPass = null;
+
+			dayInfo.hour = 0;
+			dayInfo.day = EDay.Monday;
+			dayInfo.week = 0;
 		}
 
 		public void MUpdate()
 		{
-			currentHour = Mathf.Lerp(0f, 23.99f, f);
+			dayInfo.hour = (int)Mathf.Lerp(0, 24, t);
 			InvokeOnHourPass();
 
-			f += Time.deltaTime / dayTime;
-			if (f >= 1f)
+			t += Time.deltaTime / dayTime;
+			if (t >= 1f)
 			{
-				f = 0f;
+				t = 0f;
 				++day;
-				currentDay = (EDay)(day % 7);
+				dayInfo.day = (EDay)(day % 7);
 				InvokeOnDayPass();
-				if (currentDay == EDay.Monday)
+				if (dayInfo.day == EDay.Monday)
 				{
-					++week;
+					++dayInfo.week;
 					InvokeOnWeekPass();
 				}
 			}
 		}
 
 		#region Events
-		public delegate void TimePass(float timeValue, EDay currentDay);
+		public delegate void TimePass(SDayInfo dayInfo);
 		private event TimePass OnHourPass;
 		private event TimePass OnDayPass;
 		private event TimePass OnWeekPass;
@@ -86,7 +97,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void InvokeOnHourPass()
 		{
-			OnHourPass?.Invoke(currentHour, currentDay);
+			OnHourPass?.Invoke(dayInfo);
 		}
 		#endregion
 
@@ -103,7 +114,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void InvokeOnDayPass()
 		{
-			OnDayPass?.Invoke(day, currentDay);
+			OnDayPass?.Invoke(dayInfo);
 		}
 		#endregion
 
@@ -120,7 +131,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void InvokeOnWeekPass()
 		{
-			OnWeekPass?.Invoke(week, currentDay);
+			OnWeekPass?.Invoke(dayInfo);
 		}
 		#endregion
 		#endregion

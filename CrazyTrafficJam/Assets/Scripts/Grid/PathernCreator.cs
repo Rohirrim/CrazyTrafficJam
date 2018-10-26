@@ -66,7 +66,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			}
 		}
 
-		private void TimePass(float value, EDay currentDay)
+		private void TimePass(SDayInfo dayInfo)
 		{
 			allPathern[randPathern].Apply(usedNodes[randNode].transform.position);
 			randPathern = -1;
