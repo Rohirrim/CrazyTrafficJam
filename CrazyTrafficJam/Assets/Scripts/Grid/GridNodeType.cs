@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam.GridNode
 {
-	//[CreateAssetMenu(fileName = "GridNodeType", menuName = "GridNodeType")]
 	public class GridNodeType : ScriptableObject
 	{
 		[SerializeField]

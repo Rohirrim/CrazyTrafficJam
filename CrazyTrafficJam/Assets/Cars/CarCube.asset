@@ -9,6 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c03048da1cf6ac94f8e7db77db6b1293, type: 3}
-  m_Name: Car
+  m_Name: CarCube
   m_EditorClassIdentifier: 
-  carPrefab: {fileID: 1593005181346628, guid: baf3790d4d1c6c842951ea2cc1858b20, type: 2}
+  carPrefab:
+  - car: {fileID: 1593005181346628, guid: baf3790d4d1c6c842951ea2cc1858b20, type: 2}
+    probability: 15
+    desination: {fileID: 0}

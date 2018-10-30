@@ -13,7 +13,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			[EnumFlag]
 			[SerializeField]
 			public EDay day;
-			public Car.Car type;
+			public Car.CarSpawner spawmer;
 		}
 
 		[SerializeField]
@@ -35,7 +35,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 				{
 					foreach (GridNode n in nodes)
 					{
-						GameObject obj = spawn.type.Spawn();
+						GameObject obj = spawn.spawmer.Spawn(n);
 						obj.transform.position = n.transform.position + Vector3.up;
 					}
 				}

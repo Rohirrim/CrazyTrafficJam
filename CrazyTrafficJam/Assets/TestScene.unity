@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 348951261}
   - component: {fileID: 348951262}
   - component: {fileID: 348951263}
+  - component: {fileID: 348951264}
   m_Layer: 0
   m_Name: CoreManager
   m_TagString: Untagged
@@ -434,6 +435,7 @@ MonoBehaviour:
   - {fileID: 348951262}
   - {fileID: 348951263}
   - {fileID: 2086428180}
+  - {fileID: 348951264}
 --- !u!4 &348951257
 Transform:
   m_ObjectHideFlags: 0
@@ -472,12 +474,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridPrefab: {fileID: 114508951399100632, guid: 764479c2be850a0498441565639d21d8,
     type: 2}
-  size: {x: 50, y: 50}
+  size: {x: 20, y: 20}
   allTypes:
-  - {fileID: 11400000, guid: 957e7eb38794b1749adefe41a5a2cb9e, type: 2}
-  - {fileID: 11400000, guid: 292e21d336404c841b815f3dc208fb55, type: 2}
-  - {fileID: 11400000, guid: 0e7423dc11d246c4e95612afc4b4a92a, type: 2}
   - {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - {fileID: 11400000, guid: 0e7423dc11d246c4e95612afc4b4a92a, type: 2}
+  - {fileID: 11400000, guid: 292e21d336404c841b815f3dc208fb55, type: 2}
+  - {fileID: 11400000, guid: 957e7eb38794b1749adefe41a5a2cb9e, type: 2}
 --- !u!114 &348951260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,6 +533,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayTime: 2
+--- !u!114 &348951264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 348951255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c91083321f335d4c8a1d7ceec0480cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allSpawner:
+  - {fileID: 11400000, guid: 6a9f83ed97f62594bbc96e557549c7c4, type: 2}
 --- !u!1 &358737917
 GameObject:
   m_ObjectHideFlags: 0

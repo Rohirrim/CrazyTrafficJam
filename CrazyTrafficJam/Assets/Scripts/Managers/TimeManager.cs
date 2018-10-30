@@ -67,8 +67,9 @@ namespace IronSideStudio.CrazyTrafficJam
 			if (t >= 1f)
 			{
 				t = 0f;
-				++day;
-				dayInfo.day = (EDay)(day % 7);
+				dayInfo.day = (EDay)(1 << ++day);
+				if (day == 6)
+					day = -1;
 				InvokeOnDayPass();
 				if (dayInfo.day == EDay.Monday)
 				{
