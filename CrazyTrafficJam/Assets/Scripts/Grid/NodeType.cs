@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IronSideStudio.CrazyTrafficJam
+namespace IronSideStudio.CrazyTrafficJam.GridNode
 {
 	public enum ENodeType
 	{

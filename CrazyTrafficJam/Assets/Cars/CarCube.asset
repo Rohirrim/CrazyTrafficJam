@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Name: CarCube
   m_EditorClassIdentifier: 
   carPrefab:
-  - car: {fileID: 1593005181346628, guid: baf3790d4d1c6c842951ea2cc1858b20, type: 2}
+  - car: {fileID: 114297821356718550, guid: baf3790d4d1c6c842951ea2cc1858b20, type: 2}
     probability: 15
     desination: {fileID: 0}
+  districts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

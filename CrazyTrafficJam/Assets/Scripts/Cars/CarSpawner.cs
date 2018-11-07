@@ -5,12 +5,12 @@ using UnityEngine;
 namespace IronSideStudio.CrazyTrafficJam.Car
 {
 	[CreateAssetMenu(fileName = "Car", menuName = "Car")]
-	public class CarSpawner : ScriptableObject
+	public class CarSpawner : ScriptableObject, IInitializable
 	{
 		[System.Serializable]
 		private struct SCar
 		{
-			public GameObject car;
+			public CarBehaviour car;
 			[Range(1, 100)]
 			public int probability;
 			public GridNode.GridNode desination;
@@ -18,71 +18,63 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		[SerializeField]
 		private SCar[] carPrefab;
+		[SerializeField]
 		private List<GridNode.GridNode> districts;
 
-		public void Init()
+		public void Initialize()
 		{
 			GridNode.GridManager grid = CoreManager.Instance.GetManager<GridNode.GridManager>();
 			districts = new List<GridNode.GridNode>();
-			RaycastHit hit;
-			Vector3 raycastStart = new Vector3();
+			Vector3 nodePosition = new Vector3();
 
-			for (int y = 0 ; y < grid.SizeZ ; ++y)
+			for (int z = 0 ; z < grid.SizeZ ; ++z)
 			{
-				raycastStart.y = y;
+				nodePosition.z = z;
 				for (int x = 0 ; x < grid.SizeX ; ++x)
 				{
-					raycastStart.x = x;
-					if (!Physics.Raycast(raycastStart + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
-						continue;
-					hit.transform.GetComponent<GridNode.GridNode>().AddOnChangeType(AddDesination);
+					nodePosition.x = x;
+					GridNode.GridNode node = grid.GetNode(nodePosition);
+					if (node)
+						node.AddOnChangeType(AddDesination);
 				}
 			}
 		}
 
 		private void AddDesination(GridNode.GridNode node)
 		{
-			if (node.NodeType != ENodeType.District)
-				return;
-
-			districts.Add(node);
+			if (node.NodeType != GridNode.ENodeType.District)
+				districts.Remove(node);
+			else
+				districts.Add(node);
 		}
 
-		public GameObject Spawn()
+		private GridNode.GridNode GetDestination(GridNode.GridNode node)
 		{
-			int sum = Random.Range(1, 101);
+			int index = Random.Range(0, districts.Count);
 
-			for (int i = 0 ; i < carPrefab.Length ; ++i)
-			{
-				if (sum < carPrefab[i].probability)
-					return null;
-			}
+			while (districts[index] == node)
+				index = Random.Range(0, districts.Count);
 
-			int index = Random.Range(0, carPrefab.Length);
-
-			return Instantiate(carPrefab[index].car);
+			return districts[index];
 		}
 
-		public GameObject Spawn(GridNode.GridNode node)
+		public CarBehaviour Spawn(GridNode.GridNode node)
 		{
 			int index = Random.Range(0, carPrefab.Length);
-			GameObject obj = Instantiate(carPrefab[index].car);
+			GridNode.GridNode destination = GetDestination(node);
+			Vector3[] p = Pathfinding.PathFinder.GetPath(node.GetPosition(), destination.GetPosition());
+			Vector3 direction = (p[0] - node.GetPosition() + Vector3.up).normalized;
+			CarBehaviour obj = Instantiate(carPrefab[index].car, node.GetPosition() + Vector3.up, Quaternion.Euler(direction));
 
-			var p = Pathfinding.PathFinder.GetPath(node.GetPosition(), Vector3.up);
+			obj.SetPath(p);
 
-			Debug.Log("Start path");
-
-			foreach (var d in p)
-			{
-				Debug.Log(d);
-			}
-			Debug.Log("End path");
+			InvokeOnSpawn(obj);
 
 			return obj;
 		}
 
 		#region events
-		public delegate void SpawnCar(GameObject car);
+		public delegate void SpawnCar(CarBehaviour car);
 		private event SpawnCar OnSpawn;
 
 		#region OnSpawn
@@ -96,9 +88,9 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			OnSpawn -= func;
 		}
 
-		public void InvokeOnSpawn()
+		public void InvokeOnSpawn(CarBehaviour car)
 		{
-			OnSpawn?.Invoke(null);
+			OnSpawn?.Invoke(car);
 		}
 		#endregion
 		#endregion

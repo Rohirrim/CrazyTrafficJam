@@ -19,7 +19,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			{
 				int intDelegate = i;
 				typeSelection[i].onClick.AddListener(delegate {
-					ChangeType((ENodeType)intDelegate);
+					ChangeType((GridNode.ENodeType)intDelegate);
 					gameObject.SetActive(false);
 				});
 			}
@@ -31,7 +31,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
 		}
 
-		private void ChangeType(ENodeType nodeType)
+		private void ChangeType(GridNode.ENodeType nodeType)
 		{
 			if (gridNodeSelected == null)
 				return;
@@ -50,7 +50,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			gridNodeSelected = touch.gameObject.GetComponent<GridNode.GridNode>();
 			if (gridNodeSelected)
 			{
-				gameObject.SetActive(gridNodeSelected.NodeType == ENodeType.Intersection);
+				gameObject.SetActive(gridNodeSelected.NodeType == GridNode.ENodeType.Intersection);
 				transform.position = Camera.main.WorldToScreenPoint(gridNodeSelected.GetPosition() + Vector3.up * .5f);
 			}
 		}

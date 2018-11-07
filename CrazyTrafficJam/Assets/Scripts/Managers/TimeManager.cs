@@ -19,7 +19,7 @@ namespace IronSideStudio.CrazyTrafficJam
 	{
 		public int week;
 		public EDay day;
-		public int hour;
+		public float hour;
 	}
 
 	public class TimeManager : AManager, IInitializable, IUpdatable, ICleanable
@@ -40,7 +40,8 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		public void Initialize()
 		{
-			dayInfo.hour = 0;
+			StopTimer();
+			dayInfo.hour = 0f;
 			dayInfo.day = EDay.Monday;
 			dayInfo.week = 0;
 
@@ -53,14 +54,14 @@ namespace IronSideStudio.CrazyTrafficJam
 			OnDayPass = null;
 			OnWeekPass = null;
 
-			dayInfo.hour = 0;
+			dayInfo.hour = 0f;
 			dayInfo.day = EDay.Monday;
 			dayInfo.week = 0;
 		}
 
 		public void MUpdate()
 		{
-			dayInfo.hour = (int)Mathf.Lerp(0, 24, t);
+			dayInfo.hour = Mathf.Lerp(0f, 24f, t);
 			InvokeOnHourPass();
 
 			t += Time.deltaTime / dayTime;
@@ -70,13 +71,24 @@ namespace IronSideStudio.CrazyTrafficJam
 				dayInfo.day = (EDay)(1 << ++day);
 				if (day == 6)
 					day = -1;
-				InvokeOnDayPass();
 				if (dayInfo.day == EDay.Monday)
 				{
 					++dayInfo.week;
 					InvokeOnWeekPass();
 				}
+				InvokeOnDayPass();
 			}
+		}
+
+		public void StopTimer()
+		{
+			enabled = false;
+		}
+
+		public void StartTimer()
+		{
+			enabled = true;
+			InvokeOnWeekPass();
 		}
 
 		#region Events

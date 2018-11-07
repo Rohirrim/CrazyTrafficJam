@@ -13,6 +13,10 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 		private Vector3 position;
 		public Vector3 Position => position;
 
+		private GridNode.GridNode node;
+
+		public GridNode.ENodeType Type => node.NodeType;
+
 		private int movementCost;
 		private int speedCost;
 		private int carCost;
@@ -25,15 +29,10 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 
 		public int TotalCost => movementCost + speedCost + carCost;
 
-		public PathNode(Vector3 position)
+		public PathNode(Vector3 position, GridNode.GridNode node)
 		{
 			this.position = position;
-		}
-
-		public PathNode(Vector3 position, PathNode parent)
-		{
-			this.position = position;
-			this.parent = parent;
+			this.node = node;
 		}
 
 		public void SetParent(PathNode node)

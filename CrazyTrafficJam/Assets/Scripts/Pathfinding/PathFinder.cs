@@ -16,21 +16,20 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 			instance.manager = CoreManager.Instance.GetManager<GridNode.GridManager>();
 			instance.nodes = new PathNode[instance.manager.SizeX, instance.manager.SizeZ];
 
-			Vector3 posRaycast = Vector3.up;
-			RaycastHit hit;
+			Vector3 posNode = Vector3.up;
 
-			for (int y = 0 ; y < instance.manager.SizeZ ; ++y)
+			for (int z = 0 ; z < instance.manager.SizeZ ; ++z)
 			{
-				posRaycast.z = y;
+				posNode.z = z;
 				for (int x = 0 ; x < instance.manager.SizeX ; ++x)
 				{
-					posRaycast.x = x;
-					if (Physics.Raycast(posRaycast, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
+					posNode.x = x;
+					GridNode.GridNode node = instance.manager.GetNode(posNode);
+					if (node)
 					{
-						PathNode n = new PathNode(posRaycast);
-						instance.nodes[x, y] = n;
+						PathNode n = new PathNode(posNode, node);
+						instance.nodes[x, z] = n;
 					}
-
 				}
 			}
 
@@ -56,8 +55,8 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 				return null;
 
 			bool pathSuccess = false;
-			PathNode startNode = new PathNode(start, null);
-			PathNode targetNode = new PathNode(end, null);
+			PathNode startNode = nodes[(int)start.x, (int)start.z];
+			PathNode targetNode = nodes[(int)end.x, (int)end.z];
 			Heap<PathNode> openSet = new Heap<PathNode>(manager.SizeX * manager.SizeZ);
 			HashSet<PathNode> closedSet = new HashSet<PathNode>();
 
@@ -68,7 +67,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 				PathNode currentNode = openSet.Pop();
 				closedSet.Add(currentNode);
 
-				if (currentNode.Position == targetNode.Position)
+				if (currentNode == targetNode)
 				{
 					pathSuccess = true;
 					//Find path;
@@ -79,7 +78,8 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 
 				foreach (PathNode neighbour in nodeNeighbours)
 				{
-					if (closedSet.Contains(neighbour))
+					if (closedSet.Contains(neighbour) ||
+						neighbour.Type == GridNode.ENodeType.None)
 						continue;
 
 					int movementCost = currentNode.MovementCost + neighbour.SpeedCost + neighbour.CarCost;
@@ -109,6 +109,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 			List<Vector3> path = new List<Vector3>();
 			PathNode currentNode = endNode;
 
+
 			while (currentNode != startNode)
 			{
 				path.Add(currentNode.Position);
@@ -124,36 +125,35 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 			List<PathNode> neighbours = new List<PathNode>();
 
 			int checkX = (int)node.Position.x - 1;
-			int checkY = (int)node.Position.y;
+			int checkZ = (int)node.Position.z;
 
 			if (checkX >= 0)
-				neighbours.Add(nodes[checkX, checkY]);
+				neighbours.Add(nodes[checkX, checkZ]);
 
 			checkX = (int)node.Position.x + 1;
 			if (checkX < manager.SizeX)
-				neighbours.Add(nodes[checkX, checkY]);
+				neighbours.Add(nodes[checkX, checkZ]);
 
 			checkX = (int)node.Position.x;
-			checkY = (int)node.Position.y - 1;
+			checkZ = (int)node.Position.z - 1;
 
-			if (checkY >= 0)
-				neighbours.Add(nodes[checkX, checkY]);
+			if (checkZ >= 0)
+				neighbours.Add(nodes[checkX, checkZ]);
 
-			checkY = (int)node.Position.y + 1;
-			if (checkY < manager.SizeZ)
-				neighbours.Add(nodes[checkX, checkY]);
+			checkZ = (int)node.Position.z + 1;
+			if (checkZ < manager.SizeZ)
+				neighbours.Add(nodes[checkX, checkZ]);
 			return neighbours.ToArray();
 		}
 
 		private int GetDistance(PathNode nodeA, PathNode nodeB)
 		{
-
 			int dstX = (int)Mathf.Abs(nodeA.Position.x - nodeB.Position.x);
-			int dstY = (int)Mathf.Abs(nodeA.Position.y - nodeB.Position.y);
+			int dstZ = (int)Mathf.Abs(nodeA.Position.z - nodeB.Position.z);
 
-			if (dstX > dstY)
-				return 14 * dstY + 10 * (dstX - dstY);
-			return 14 * dstX + 10 * (dstY - dstX);
+			if (dstX > dstZ)
+				return 14 * dstZ + 10 * (dstX - dstZ);
+			return 14 * dstX + 10 * (dstZ - dstX);
 		}
 	}
 }

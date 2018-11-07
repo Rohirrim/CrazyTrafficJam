@@ -130,7 +130,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 								break;
 							if (DragAndDrop.objectReferences.Length != 1)
 								break;
-							GridNodeType dragType = (GridNodeType)DragAndDrop.objectReferences[0];
+							GridNodeType dragType = DragAndDrop.objectReferences[0] as GridNodeType;
 							if (dragType == null)
 								break;
 							DragAndDrop.visualMode = DragAndDropVisualMode.Link;

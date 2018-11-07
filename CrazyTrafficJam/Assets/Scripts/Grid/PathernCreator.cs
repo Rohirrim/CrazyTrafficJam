@@ -15,11 +15,15 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 		private int randPathern;
 		private int randNode;
 
+		GridNode useNode;
+
 		public bool Enable { get { return randPathern == -1; } }
 
 		public override void Construct()
 		{
 			GridManager grid = CoreManager.Instance.GetManager<GridManager>();
+			CoreManager.Instance.GetManager<TimeManager>().AddOnWeekPass(TimePass);
+
 			size = new Vector3Int(grid.SizeX, 0, grid.SizeZ);
 			usedNodes = new List<GridNode>();
 		}
@@ -29,16 +33,23 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			pos.x = Mathf.CeilToInt(size.x * .5f);
 			pos.z = Mathf.CeilToInt(size.z * .5f);
 
-			CoreManager.Instance.GetManager<TimeManager>().AddOnWeekPass(TimePass);
-
 			GridManager grid = CoreManager.Instance.GetManager<GridManager>();
-			GridNode[] allNodes = grid.GetGridNodes();
+			Vector3 nodePosition = new Vector3();
 
-			foreach (GridNode n in allNodes)
-				n.AddOnChangeType(NodeChangeType);
+			for (int z = 0 ; z < size.z ; ++z)
+			{
+				nodePosition.z = z;
+				for (int x = 0 ; x < size.x ; ++x)
+				{
+					nodePosition.x = x;
+					GridNode node = grid.GetNode(nodePosition);
+					if (node)
+						node.AddOnChangeType(NodeChangeType);
+				}
+			}
 
-			int rand = Random.Range(0, allPathern.Length);
-			allPathern[rand].Apply(pos);
+			randPathern = Random.Range(0, allPathern.Length);
+			useNode = grid.GetNode(pos);
 		}
 
 		public void MUpdate()
@@ -46,7 +57,9 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			randNode = Random.Range(0, usedNodes.Count);
 			randPathern = Random.Range(0, allPathern.Length);
 
-			if (!allPathern[randPathern].CanInstantiate(usedNodes[randNode].transform.position))
+			useNode = usedNodes[randNode];
+
+			if (!allPathern[randPathern].CanInstantiate(useNode.transform.position))
 			{
 				randPathern = -1;
 			}
@@ -68,7 +81,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 
 		private void TimePass(SDayInfo dayInfo)
 		{
-			allPathern[randPathern].Apply(usedNodes[randNode].transform.position);
+			allPathern[randPathern].Apply(useNode.transform.position);
 			randPathern = -1;
 		}
 	}

@@ -119,5 +119,13 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 				return useNodes.ToArray();
 			return gridNodes.ToArray();
 		}
+
+		public GridNode GetNode(Vector3 position)
+		{
+			RaycastHit hit;
+			if (Physics.Raycast(position + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
+				return hit.transform.GetComponent<GridNode>();
+			return null;
+		}
 	}
 }

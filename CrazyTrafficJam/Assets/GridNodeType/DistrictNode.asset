@@ -15,4 +15,4 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 1, a: 1}
   spawnInfo:
   - day: 31
-    spawmer: {fileID: 11400000, guid: 6a9f83ed97f62594bbc96e557549c7c4, type: 2}
+    carSpawner: {fileID: 11400000, guid: 6a9f83ed97f62594bbc96e557549c7c4, type: 2}
