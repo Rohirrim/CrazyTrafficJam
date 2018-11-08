@@ -36,7 +36,6 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 					foreach (GridNode n in nodes)
 					{
 						Car.CarBehaviour obj = spawn.carSpawner.Spawn(n);
-						obj.transform.position = n.transform.position + Vector3.up;
 					}
 				}
 			}

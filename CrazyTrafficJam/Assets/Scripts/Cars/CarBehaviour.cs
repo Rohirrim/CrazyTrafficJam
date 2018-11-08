@@ -18,14 +18,24 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		public void MUpdate()
 		{
-			transform.position += direction * speed * Time.deltaTime;
+			Move();
+			CheckDestination();
+		}
 
+		private void Move()
+		{
+			transform.position += direction * speed * Time.deltaTime;
+		}
+
+		private void CheckDestination()
+		{
 			if (Vector3.Distance(transform.position, currentDestination) < 0.01f)
 			{
 				transform.position = pathToDestination[index++];
 				if (Enable)
 					NextStep();
-				gameObject.SetActive(Enable);
+				else
+					gameObject.SetActive(false);
 			}
 		}
 
@@ -33,11 +43,12 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		{
 			currentDestination = pathToDestination[index];
 			direction = (currentDestination - transform.position).normalized;
+			direction.y = 0f;
 			transform.forward = direction;
-			/*
-			transform.position += transform.right * .35f;
-			currentDestination += transform.right * .35f;
-			/**/
+
+			Vector3 rightDirection = Quaternion.Euler(0f, 90f, 0f) * direction;
+			transform.position += rightDirection * .35f;
+			currentDestination += rightDirection * .35f;
 		}
 
 		public void SetPath(Vector3[] path)

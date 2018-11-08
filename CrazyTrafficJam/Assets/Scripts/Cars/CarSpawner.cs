@@ -5,7 +5,7 @@ using UnityEngine;
 namespace IronSideStudio.CrazyTrafficJam.Car
 {
 	[CreateAssetMenu(fileName = "Car", menuName = "Car")]
-	public class CarSpawner : ScriptableObject, IInitializable
+	public class CarSpawner : ScriptableObject, IInitializable, IUpdatable
 	{
 		[System.Serializable]
 		private struct SCar
@@ -13,13 +13,41 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			public CarBehaviour car;
 			[Range(1, 100)]
 			public int probability;
+			public List<CarBehaviour> poolCar;
 			public GridNode.GridNode desination;
+
+			public CarBehaviour CreateCar(Vector3 position)
+			{
+				foreach (CarBehaviour c in poolCar)
+				{
+					if (!c.gameObject.activeSelf)
+					{
+						c.gameObject.SetActive(true);
+						c.transform.position = position;
+						return c;
+					}
+				}
+				CarBehaviour newCar = Instantiate(car, position, Quaternion.identity);
+				poolCar.Add(newCar);
+				return newCar;
+			}
+
+			public void Update()
+			{
+				foreach (CarBehaviour c in poolCar)
+				{
+					if (c.Enable)
+						c.MUpdate();
+				}
+			}
 		}
 
 		[SerializeField]
 		private SCar[] carPrefab;
 		[SerializeField]
 		private List<GridNode.GridNode> districts;
+
+		public bool Enable { get { return true; } }
 
 		public void Initialize()
 		{
@@ -38,6 +66,17 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 						node.AddOnChangeType(AddDesination);
 				}
 			}
+
+			for (int i = 0 ; i < carPrefab.Length ; ++i)
+			{
+				carPrefab[i].poolCar = new List<CarBehaviour>();
+			}
+		}
+
+		public void MUpdate()
+		{
+			foreach (SCar c in carPrefab)
+				c.Update();
 		}
 
 		private void AddDesination(GridNode.GridNode node)
@@ -62,9 +101,8 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		{
 			int index = Random.Range(0, carPrefab.Length);
 			GridNode.GridNode destination = GetDestination(node);
+			CarBehaviour obj = carPrefab[index].CreateCar(node.GetPosition() + Vector3.up);
 			Vector3[] p = Pathfinding.PathFinder.GetPath(node.GetPosition(), destination.GetPosition());
-			Vector3 direction = (p[0] - node.GetPosition() + Vector3.up).normalized;
-			CarBehaviour obj = Instantiate(carPrefab[index].car, node.GetPosition() + Vector3.up, Quaternion.Euler(direction));
 
 			obj.SetPath(p);
 

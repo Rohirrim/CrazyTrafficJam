@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam.GridNode
 {
+	public enum ENodeType
+	{
+		None,
+		District,
+		Road,
+		Intersection
+	}
+
 	public class GridNodeType : ScriptableObject
 	{
 		[SerializeField]

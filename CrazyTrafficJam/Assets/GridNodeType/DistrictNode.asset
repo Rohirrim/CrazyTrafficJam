@@ -16,3 +16,5 @@ MonoBehaviour:
   spawnInfo:
   - day: 31
     carSpawner: {fileID: 11400000, guid: 6a9f83ed97f62594bbc96e557549c7c4, type: 2}
+  - day: 96
+    carSpawner: {fileID: 11400000, guid: 2c5e5f8c1ab6b6d4aad67db8725fe433, type: 2}
