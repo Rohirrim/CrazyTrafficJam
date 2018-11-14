@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: Road
   m_EditorClassIdentifier: 
   nodeType: 2
-  behaviour: {fileID: 11400000, guid: 5eeb935a27e163444b86b2bef698c409, type: 2}
+  assetMode: {fileID: 1943221048299956, guid: 9cc199705b6f2a24987022770acc5971, type: 2}
   color: {r: 0.53676474, g: 0.53676474, b: 0.53676474, a: 1}

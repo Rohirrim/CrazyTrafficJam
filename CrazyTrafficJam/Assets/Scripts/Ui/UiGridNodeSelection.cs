@@ -9,7 +9,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 	{
 		[SerializeField]
 		private Button[] typeSelection;
-		private GridNode.GridNode gridNodeSelected;
+		private Grid.Node gridNodeSelected;
 
 		public void Initialize()
 		{
@@ -19,7 +19,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			{
 				int intDelegate = i;
 				typeSelection[i].onClick.AddListener(delegate {
-					ChangeType((GridNode.ENodeType)intDelegate);
+					ChangeType((Grid.ENodeType)intDelegate);
 					gameObject.SetActive(false);
 				});
 			}
@@ -31,7 +31,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
 		}
 
-		private void ChangeType(GridNode.ENodeType nodeType)
+		private void ChangeType(Grid.ENodeType nodeType)
 		{
 			if (gridNodeSelected == null)
 				return;
@@ -47,10 +47,10 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 				gameObject.SetActive(false);
 				return;
 			}
-			gridNodeSelected = touch.gameObject.GetComponent<GridNode.GridNode>();
+			gridNodeSelected = touch.gameObject.GetComponent<Grid.Node>();
 			if (gridNodeSelected)
 			{
-				gameObject.SetActive(gridNodeSelected.NodeType == GridNode.ENodeType.Intersection);
+				gameObject.SetActive(gridNodeSelected.NodeType == Grid.ENodeType.Intersection);
 				transform.position = Camera.main.WorldToScreenPoint(gridNodeSelected.GetPosition() + Vector3.up * .5f);
 			}
 		}

@@ -7,13 +7,13 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 	public class PathFinder
 	{
 		private static PathFinder instance;
-		private GridNode.GridManager manager;
+		private Grid.Manager manager;
 		private PathNode[,] nodes;
 
 		public static PathFinder CreateInstance()
 		{
 			instance = new PathFinder();
-			instance.manager = CoreManager.Instance.GetManager<GridNode.GridManager>();
+			instance.manager = CoreManager.Instance.GetManager<Grid.Manager>();
 			instance.nodes = new PathNode[instance.manager.SizeX, instance.manager.SizeZ];
 
 			Vector3 posNode = Vector3.up;
@@ -24,7 +24,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 				for (int x = 0 ; x < instance.manager.SizeX ; ++x)
 				{
 					posNode.x = x;
-					GridNode.GridNode node = instance.manager.GetNode(posNode);
+					Grid.Node node = instance.manager.GetNode(posNode);
 					if (node)
 					{
 						PathNode n = new PathNode(posNode, node);
@@ -41,12 +41,12 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 			instance = null;
 		}
 
-		public static Vector3[] GetPath(Vector3 start, Vector3 end)
+		public static Grid.Node[] GetPath(Vector3 start, Vector3 end)
 		{
 			return instance.Pathfinding(start, end);
 		}
 
-		private Vector3[] Pathfinding(Vector3 start, Vector3 end)
+		private Grid.Node[] Pathfinding(Vector3 start, Vector3 end)
 		{
 			RaycastHit hit;
 			if (!Physics.Raycast(start + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
@@ -79,7 +79,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 				foreach (PathNode neighbour in nodeNeighbours)
 				{
 					if (closedSet.Contains(neighbour) ||
-						neighbour.Type == GridNode.ENodeType.None)
+						neighbour.Type == Grid.ENodeType.None)
 						continue;
 
 					int movementCost = currentNode.MovementCost + neighbour.SpeedCost + neighbour.CarCost;
@@ -101,21 +101,20 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 			{
 				return RetracePath(startNode, targetNode);
 			}
-			return new Vector3[0];
+			return null;
 		}
 
-		private Vector3[] RetracePath(PathNode startNode, PathNode endNode)
+		private Grid.Node[] RetracePath(PathNode startNode, PathNode endNode)
 		{
-			List<Vector3> path = new List<Vector3>();
+			List<Grid.Node> path = new List<Grid.Node>();
 			PathNode currentNode = endNode;
-
 
 			while (currentNode != startNode)
 			{
-				path.Add(currentNode.Position);
+				path.Add(currentNode.Node);
 				currentNode = currentNode.Parent;
 			}
-			Vector3[] waypoints = path.ToArray();
+			Grid.Node[] waypoints = path.ToArray();
 			System.Array.Reverse(waypoints);
 			return waypoints;
 		}

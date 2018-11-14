@@ -2,39 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IronSideStudio.CrazyTrafficJam.GridNode
+namespace IronSideStudio.CrazyTrafficJam.Grid
 {
 	public class PathernCreator : AManager, IInitializable, IUpdatable
 	{
 		[SerializeField]
-		private GridPathern[] allPathern;
-		private List<GridNode> usedNodes;
+		private Pathern[] allPathern;
+		private List<Node> usedNodes;
 		private Vector3Int size;
 
-		private Vector3Int pos;
 		private int randPathern;
 		private int randNode;
 
-		GridNode useNode;
+		Node useNode;
 
 		public bool Enable { get { return randPathern == -1; } }
 
 		public override void Construct()
 		{
-			GridManager grid = CoreManager.Instance.GetManager<GridManager>();
+			Manager grid = CoreManager.Instance.GetManager<Manager>();
 			CoreManager.Instance.GetManager<TimeManager>().AddOnWeekPass(TimePass);
 
 			size = new Vector3Int(grid.SizeX, 0, grid.SizeZ);
-			usedNodes = new List<GridNode>();
+			usedNodes = new List<Node>();
 		}
 
 		public void Initialize()
 		{
-			pos.x = Mathf.CeilToInt(size.x * .5f);
-			pos.z = Mathf.CeilToInt(size.z * .5f);
-
-			GridManager grid = CoreManager.Instance.GetManager<GridManager>();
+			Manager grid = CoreManager.Instance.GetManager<Manager>();
 			Vector3 nodePosition = new Vector3();
+			Vector3Int pos = new Vector3Int(Mathf.CeilToInt(size.x * .5f), 0, Mathf.CeilToInt(size.z * .5f));
 
 			for (int z = 0 ; z < size.z ; ++z)
 			{
@@ -42,7 +39,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 				for (int x = 0 ; x < size.x ; ++x)
 				{
 					nodePosition.x = x;
-					GridNode node = grid.GetNode(nodePosition);
+					Node node = grid.GetNode(nodePosition);
 					if (node)
 						node.AddOnChangeType(NodeChangeType);
 				}
@@ -65,7 +62,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridNode
 			}
 		}
 
-		private void NodeChangeType(GridNode gridNode)
+		private void NodeChangeType(Node gridNode)
 		{
 			if (gridNode.NodeType == ENodeType.District)
 			{

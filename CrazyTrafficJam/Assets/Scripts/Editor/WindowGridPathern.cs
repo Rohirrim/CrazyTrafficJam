@@ -14,8 +14,8 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 			GetWindow(typeof(WindowGridPathern)).Show();
 		}
 
-		private List<GridNode.GridPathern> allPathern;
-		private List<GridNode.GridNodeType> allNodeType;
+		private List<Grid.Pathern> allPathern;
+		private List<Grid.NodeType> allNodeType;
 
 		private ViewGridPathern currentPathern;
 
@@ -23,14 +23,14 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 
 		private void Awake()
 		{
-			allPathern = new List<GridNode.GridPathern>();
-			allNodeType = new List<GridNode.GridNodeType>();
+			allPathern = new List<Grid.Pathern>();
+			allNodeType = new List<Grid.NodeType>();
 
 			var files = Directory.GetFiles(Application.dataPath + "/Pathern", "*.asset");
 			for (int i = 0 ; i < files.Length ; ++i)
 			{
 				string fileName = files[i].Substring(files[i].LastIndexOf('/') + 1).Replace('\\', '/');
-				GridNode.GridPathern pathern = AssetDatabase.LoadAssetAtPath<GridNode.GridPathern>("Assets/" + fileName);
+				Grid.Pathern pathern = AssetDatabase.LoadAssetAtPath<Grid.Pathern>("Assets/" + fileName);
 				allPathern.Add(pathern);
 			}
 
@@ -38,7 +38,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 			for (int i = 0 ; i < files.Length ; ++i)
 			{
 				string fileName = files[i].Substring(files[i].LastIndexOf('/') + 1).Replace('\\', '/');
-				GridNode.GridNodeType gridType = AssetDatabase.LoadAssetAtPath<GridNode.GridNodeType>("Assets/" + fileName);
+				Grid.NodeType gridType = AssetDatabase.LoadAssetAtPath<Grid.NodeType>("Assets/" + fileName);
 				allNodeType.Add(gridType);
 			}
 
@@ -95,10 +95,10 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 		private SerializedProperty nodesArray;
 
 		private Vector2Int size;
-		private GridNode.GridNodeType[,] grid;
+		private Grid.NodeType[,] grid;
 		private GUIStyle skinGrid;
 
-		public ViewGridPathern(GridNode.GridPathern pathern)
+		public ViewGridPathern(Grid.Pathern pathern)
 		{
 			currentPathern = new SerializedObject(pathern);
 
@@ -120,7 +120,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 				size.x = 1;
 			if (size.y < 1)
 				size.y = 1;
-			grid = new GridNode.GridNodeType[size.x, size.y];
+			grid = new Grid.NodeType[size.x, size.y];
 
 			skinGrid = new GUIStyle(GUI.skin.button) {
 				fixedWidth = 50f,
@@ -152,7 +152,7 @@ namespace IronSideStudio.CrazyTrafficJam.GridEditor
 
 		private void ChangeSize(Vector2Int oldSize)
 		{
-			GridNode.GridNodeType[,] n = new GridNode.GridNodeType[size.x, size.y];
+			Grid.NodeType[,] n = new Grid.NodeType[size.x, size.y];
 
 			for (int y = 0 ; y < size.y && y < oldSize.y ; ++y)
 			{

@@ -80,6 +80,11 @@ namespace IronSideStudio.CrazyTrafficJam
 			}
 		}
 
+		public void SetTimeScale(float scale)
+		{
+			Time.timeScale = scale;
+		}
+
 		public void StopTimer()
 		{
 			enabled = false;

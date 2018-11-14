@@ -50,7 +50,6 @@ namespace IronSideStudio.CrazyTrafficJam
 				initializableManager[i].Initialize();
 			}
 			enabled = updatableManager.Length > 0;
-			GetManager<TimeManager>().StartTimer();
 		}
 
 		private void Update()

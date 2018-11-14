@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9063fb48fe4cedd42a5b555a3d04eebc, type: 3}
+  m_Name: CrossRoad
+  m_EditorClassIdentifier: 
+  nodeType: 3
+  assetMode: {fileID: 1256447082562754, guid: e6daaae5dbf3a7d4781c68b1b2fa0723, type: 2}
+  color: {r: 0, g: 0, b: 0, a: 1}

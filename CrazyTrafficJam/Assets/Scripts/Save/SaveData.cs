@@ -25,7 +25,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		[XmlElement("Name")]
 		public string name;
 		[XmlAttribute("Type")]
-		public GridNode.ENodeType type;
+		public Grid.ENodeType type;
 		[XmlElement("Position")]
 		public Vector3 position;
 	}

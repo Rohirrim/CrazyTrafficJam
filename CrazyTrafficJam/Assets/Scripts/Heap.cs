@@ -3,134 +3,137 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heap<T> where T : IComparable<T>
+namespace IronSideStudio.CrazyTrafficJam
 {
-	private HeapNode<T>[] items;
-	private int currentItemCount;
-
-	public int Count => currentItemCount;
-	public int MaxSize => items.Length;
-
-	public Heap(int maxSize)
+	public class Heap<T> where T : IComparable<T>
 	{
-		items = new HeapNode<T>[maxSize];
-		currentItemCount = 0;
-	}
+		private HeapNode<T>[] items;
+		private int currentItemCount;
 
-	public void Push(T item)
-	{
-		HeapNode<T> newNode = new HeapNode<T>(item);
-		newNode.HeapIndex = currentItemCount;
+		public int Count => currentItemCount;
+		public int MaxSize => items.Length;
 
-		items[currentItemCount] = newNode;
-		SortUp(newNode);
-		++currentItemCount;
-	}
-
-	public T Peek()
-	{
-		if (currentItemCount == 0)
-			return default(T);
-		return items[0].Node;
-	}
-
-	public T Pop()
-	{
-		if (currentItemCount == 0)
-			return default(T);
-		T tmp = items[0].Node;
-		--currentItemCount;
-		items[0].Node = items[currentItemCount].Node;
-		SortDown(items[0]);
-
-		return tmp;
-	}
-
-	public bool Contains(T item)
-	{
-		for (int i = 0 ; i < currentItemCount ; ++i)
+		public Heap(int maxSize)
 		{
-			if (Equals(items[i].Node, item))
-				return true;
+			items = new HeapNode<T>[maxSize];
+			currentItemCount = 0;
 		}
-		return false;
-	}
 
-	public void UpdateItem(T item)
-	{
-		for (int i = 0 ; i < currentItemCount ; ++i)
+		public void Push(T item)
 		{
-			if (Equals(items[i].Node, item))
+			HeapNode<T> newNode = new HeapNode<T>(item);
+			newNode.HeapIndex = currentItemCount;
+
+			items[currentItemCount] = newNode;
+			SortUp(newNode);
+			++currentItemCount;
+		}
+
+		public T Peek()
+		{
+			if (currentItemCount == 0)
+				return default(T);
+			return items[0].Node;
+		}
+
+		public T Pop()
+		{
+			if (currentItemCount == 0)
+				return default(T);
+			T tmp = items[0].Node;
+			--currentItemCount;
+			items[0].Node = items[currentItemCount].Node;
+			SortDown(items[0]);
+
+			return tmp;
+		}
+
+		public bool Contains(T item)
+		{
+			for (int i = 0 ; i < currentItemCount ; ++i)
 			{
-				SortUp(items[i]);
+				if (Equals(items[i].Node, item))
+					return true;
 			}
+			return false;
 		}
-	}
 
-	private void SortUp(HeapNode<T> item)
-	{
-		int parentIndex = (item.HeapIndex - 1) / 2;
-
-		while (true)
+		public void UpdateItem(T item)
 		{
-			HeapNode<T> parentItem = items[parentIndex];
-
-			if (item.Node.CompareTo(parentItem.Node) > 0)
-				Swap(item, parentItem);
-			else
+			for (int i = 0 ; i < currentItemCount ; ++i)
 			{
-				break;
-			}
-			parentIndex = (item.HeapIndex - 1) / 2;
-		}
-	}
-
-	private void SortDown(HeapNode<T> item)
-	{
-		while (true)
-		{
-			int childIndexLeft = item.HeapIndex * 2 + 1;
-			int childIndexRight = item.HeapIndex * 2 + 2;
-			int swapIndex = 0;
-
-			if (childIndexLeft < currentItemCount)
-			{
-				swapIndex = childIndexLeft;
-
-				if (childIndexRight < currentItemCount &&
-					items[childIndexLeft].Node.CompareTo(items[childIndexRight].Node) < 0)
+				if (Equals(items[i].Node, item))
 				{
-					swapIndex = childIndexRight;
+					SortUp(items[i]);
 				}
+			}
+		}
 
-				if (item.Node.CompareTo(items[swapIndex].Node) < 0)
-					Swap(item, items[swapIndex]);
+		private void SortUp(HeapNode<T> item)
+		{
+			int parentIndex = (item.HeapIndex - 1) / 2;
+
+			while (true)
+			{
+				HeapNode<T> parentItem = items[parentIndex];
+
+				if (item.Node.CompareTo(parentItem.Node) > 0)
+					Swap(item, parentItem);
+				else
+				{
+					break;
+				}
+				parentIndex = (item.HeapIndex - 1) / 2;
+			}
+		}
+
+		private void SortDown(HeapNode<T> item)
+		{
+			while (true)
+			{
+				int childIndexLeft = item.HeapIndex * 2 + 1;
+				int childIndexRight = item.HeapIndex * 2 + 2;
+				int swapIndex = 0;
+
+				if (childIndexLeft < currentItemCount)
+				{
+					swapIndex = childIndexLeft;
+
+					if (childIndexRight < currentItemCount &&
+						items[childIndexLeft].Node.CompareTo(items[childIndexRight].Node) < 0)
+					{
+						swapIndex = childIndexRight;
+					}
+
+					if (item.Node.CompareTo(items[swapIndex].Node) < 0)
+						Swap(item, items[swapIndex]);
+					else
+						return;
+				}
 				else
 					return;
 			}
-			else
-				return;
+		}
+
+		private void Swap(HeapNode<T> itemA, HeapNode<T> itemB)
+		{
+			items[itemA.HeapIndex] = itemB;
+			items[itemB.HeapIndex] = itemA;
+			int itemAIndex = itemA.HeapIndex;
+			itemA.HeapIndex = itemB.HeapIndex;
+			itemB.HeapIndex = itemAIndex;
 		}
 	}
 
-	private void Swap(HeapNode<T> itemA, HeapNode<T> itemB)
+	public class HeapNode<T> where T : IComparable<T>
 	{
-		items[itemA.HeapIndex] = itemB;
-		items[itemB.HeapIndex] = itemA;
-		int itemAIndex = itemA.HeapIndex;
-		itemA.HeapIndex = itemB.HeapIndex;
-		itemB.HeapIndex = itemAIndex;
-	}
-}
+		public T Node;
+		public int HeapIndex;
 
-public class HeapNode<T> where T : IComparable<T>
-{
-	public T Node;
-	public int HeapIndex;
-
-	public HeapNode(T node)
-	{
-		Node = node;
-		HeapIndex = 0;
+		public HeapNode(T node)
+		{
+			Node = node;
+			HeapIndex = 0;
+		}
 	}
 }
