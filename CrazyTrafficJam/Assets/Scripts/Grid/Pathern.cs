@@ -103,7 +103,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 					Node gridNode = hit.transform.GetComponent<Node>();
 					if (gridNode == null)
 						continue;
-					gridNode.SetType(n.type.Type);
+					n.type.AddNode(gridNode);
 				}
 			}
 		}

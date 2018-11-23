@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
-	public class GameplayManager : AManager, IInitializable, IUpdatable, ICleanable
+	public class GameplayManager : MonoBehaviour
 	{
-		[SerializeField]
 		private AManager[] managers;
 		private IUpdatable[] updatableManager;
 		private IInitializable[] initializableManager;
 		private ICleanable[] cleanableManager;
 
-		public bool Enable => enabled;
+		private static GameplayManager instance;
+		public static GameplayManager Instance => instance;
 
-		public override void Construct()
+		private void Awake()
 		{
-			AManager[] comp = GetComponents<AManager>();
-			managers = new AManager[comp.Length - 1];
+			instance = this;
+			managers = GetComponentsInChildren<AManager>();
 
-			for (int i = 1 ; i < comp.Length ; ++i)
+			for (int i = 0 ; i < managers.Length ; ++i)
 			{
-				managers[i - 1] = comp[i];
-				managers[i - 1].Construct();
+				managers[i].Construct();
 			}
 
 			updatableManager = GetInterface<IUpdatable>();
@@ -45,17 +43,17 @@ namespace IronSideStudio.CrazyTrafficJam
 			return templateList.ToArray();
 		}
 
-		public void Initialize()
+		private void Start()
 		{
 			for (int i = 0 ; i < initializableManager.Length ; ++i)
 			{
 				initializableManager[i].Initialize();
 			}
 			enabled = updatableManager.Length > 0;
-			CoreManager.Instance.GetManager<TimeManager>().StartTimer();
+			GetManager<TimeManager>().StartTimer();
 		}
 
-		public void MUpdate()
+		private void Update()
 		{
 			for (int i = 0 ; i < updatableManager.Length ; ++i)
 			{
@@ -64,12 +62,25 @@ namespace IronSideStudio.CrazyTrafficJam
 			}
 		}
 
-		public void Clean()
+		private void OnDestroy()
 		{
 			for (int i = 0 ; i < cleanableManager.Length ; ++i)
 			{
 				cleanableManager[i].Clean();
 			}
+		}
+
+		public T GetManager<T>() where T : AManager
+		{
+			T searchManager = null;
+
+			for (int i = 0 ; i < managers.Length ; ++i)
+			{
+				searchManager = managers[i] as T;
+				if (searchManager != null)
+					return searchManager;
+			}
+			return null;
 		}
 	}
 }

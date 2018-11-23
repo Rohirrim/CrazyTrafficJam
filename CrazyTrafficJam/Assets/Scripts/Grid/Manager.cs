@@ -13,9 +13,11 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		[SerializeField]
 		private NodeType[] allTypes;
+		[SerializeField]
+		private NodeType defaultType;
 
 		private List<Node> gridNodes;
-		private List<Node> useNodes;
+		private HashSet<Node> useNodes;
 
 		public int SizeX => size.x;
 		public int SizeZ => size.y;
@@ -25,7 +27,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		public override void Construct()
 		{
 			gridNodes = new List<Node>();
-			useNodes = new List<Node>();
+			useNodes = new HashSet<Node>();
 
 			foreach (NodeType types in allTypes)
 			{
@@ -37,8 +39,9 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 				for (int x = 0 ; x < SizeX ; ++x)
 				{
 					Node node = Instantiate(gridPrefab, transform);
-					node.Initialize(x, z, allTypes);
+					node.Initialize(x, z);
 					gridNodes.Add(node);
+					defaultType.AddNode(node);
 				}
 			}
 		}
@@ -68,9 +71,10 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 				crossPoints = new SaveGridNode[gridNodes.Count]
 			};
 
-			for (int i = 0 ; i < useNodes.Count ; ++i)
+			int i = 0;
+			foreach (Node n in useNodes)
 			{
-				save.crossPoints[i] = useNodes[i].Save();
+				save.crossPoints[i++] = n.Save();
 			}
 
 			return save;
@@ -78,6 +82,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public void Load(SaveMap save)
 		{
+			/*
 			for (int i = 0 ; i < save.crossPoints.Length ; ++i)
 			{
 				SaveGridNode node = save.crossPoints[i];
@@ -91,6 +96,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 					gridNode.SetType(node.type);
 				}
 			}
+			/**/
 		}
 
 		private void GridChangeType(Node node)
@@ -116,8 +122,8 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public Node[] GetGridNodes(bool useNode = false)
 		{
-			if (useNode)
-				return useNodes.ToArray();
+			//if (useNode)
+				//return useNodes.ToArray();
 			return gridNodes.ToArray();
 		}
 

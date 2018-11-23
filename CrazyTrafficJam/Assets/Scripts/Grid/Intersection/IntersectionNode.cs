@@ -4,15 +4,43 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam.Grid
 {
-	[CreateAssetMenu(fileName = "IntersectionNode", menuName = "GridNodeType/Intersection")]
-	public class IntersectionNode : NodeType
+	public class IntersectionNode : SimpleRoad, IUpdatable
 	{
-		public override void Initialize()
+		protected struct SDriverIn
 		{
-			base.Initialize();
+			public Car.Driver driver;
+			public float time;
 		}
 
-		protected override void Behaviour(Node gridNode)
+		protected HashSet<SDriverIn> driversIn;
+
+		public bool Enable => driversIn.Count > 0;
+
+		private void Awake()
+		{
+			driversIn = new HashSet<SDriverIn>();
+		}
+
+		public override bool CanDrive(Car.Driver driver)
+		{
+			Vector3 driverRight = driver.transform.right;
+			Vector3 startRaycast = transform.position + driver.transform.forward * Constante.Gameplay.roadSpace;
+			startRaycast.y = driver.transform.position.y;
+
+			if (Physics.Raycast(startRaycast, driverRight, Constante.Gameplay.securityDistance * 10f, LayerMask.GetMask(Constante.Layer.Car)))
+			{
+				SDriverIn sDriver = new SDriverIn {
+					driver = driver,
+					time = Time.time
+				};
+				driversIn.Add(sDriver);
+				return false;
+			}
+			driversIn.RemoveWhere(d => d.driver == driver);
+			return true;
+		}
+
+		public void MUpdate()
 		{
 
 		}

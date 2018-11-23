@@ -14,9 +14,16 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 	public class NodeType : ScriptableObject, IInitializable, IUpdatable
 	{
+		protected struct SNode
+		{
+			public Node node;
+			public GameObject road;
+			public IUpdatable updatable;
+		}
+
 		[SerializeField]
 		protected ENodeType nodeType;
-		protected HashSet<Node> nodes;
+		protected HashSet<SNode> nodes;
 		[SerializeField]
 		private GameObject assetMode;
 		public Color color;
@@ -27,30 +34,62 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public virtual void Initialize()
 		{
-			nodes = new HashSet<Node>();
+			nodes = new HashSet<SNode>();
 		}
 
 		public void AddNode(Node n)
 		{
-			nodes.Add(n);
+			SNode sn = new SNode();
+			sn.node = n;
 			if (assetMode)
 			{
-				Instantiate(assetMode, n.transform);
+				sn.road = Instantiate(assetMode, n.transform);
+				IUpdatable updatable = sn.road.GetComponent<IUpdatable>();
+				if (updatable != null)
+				{
+					sn.updatable = updatable;
+				}
 			}
+			n.SetType(this, sn.road);
+			nodes.Add(sn);
 		}
 
 		public void RemoveNode(Node n)
 		{
-			nodes.Remove(n);
+			if (!Contains(n))
+				return;
+			SNode node = GetSNode(n);
+			nodes.Remove(node);
+			Destroy(node.road);
 		}
 
 		public void MUpdate()
 		{
-			foreach (Node n in nodes)
-				Behaviour(n);
+			foreach (SNode n in nodes)
+			{
+				if (n.updatable != null && n.updatable.Enable)
+					n.updatable.MUpdate();
+			}
 		}
 
-		protected virtual void Behaviour(Node gridNode)
-		{ }
+		private bool Contains(Node n)
+		{
+			foreach (SNode node in nodes)
+			{
+				if (node.node == n)
+					return true;
+			}
+			return false;
+		}
+
+		private SNode GetSNode(Node n)
+		{
+			foreach (SNode node in nodes)
+			{
+				if (node.node == n)
+					return node;
+			}
+			return new SNode();
+		}
 	}
 }

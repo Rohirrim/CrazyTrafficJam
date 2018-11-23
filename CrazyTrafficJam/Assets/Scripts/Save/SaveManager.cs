@@ -27,7 +27,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		private Save CreateSaveObject(string saveName)
 		{
 			Save save = new Save() {
-				map = CoreManager.Instance.GetManager<Grid.Manager>().Save(saveName)
+				map = GameplayManager.Instance.GetManager<Grid.Manager>().Save(saveName)
 			};
 
 			return save;
@@ -85,7 +85,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void LoadGame(Save save)
 		{
-			CoreManager.Instance.GetManager<Grid.Manager>().Load(save.map);
+			GameplayManager.Instance.GetManager<Grid.Manager>().Load(save.map);
 		}
 		#endregion
 	}

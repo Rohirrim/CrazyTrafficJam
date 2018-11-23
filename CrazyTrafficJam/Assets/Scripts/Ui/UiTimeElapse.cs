@@ -19,13 +19,13 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 			dayElapse.text = EDay.Monday.ToString();
 			weekElapse.text = "0";
 
-			TimeManager time = CoreManager.Instance.GetManager<TimeManager>();
+			TimeManager time = GameplayManager.Instance.GetManager<TimeManager>();
 			time.AddOnHourPass(TimePass);
 		}
 
 		public void Clean()
 		{
-			TimeManager time = CoreManager.Instance.GetManager<TimeManager>();
+			TimeManager time = GameplayManager.Instance.GetManager<TimeManager>();
 			time.RemoveOnHourPass(TimePass);
 		}
 

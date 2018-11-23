@@ -13,7 +13,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 		public static PathFinder CreateInstance()
 		{
 			instance = new PathFinder();
-			instance.manager = CoreManager.Instance.GetManager<Grid.Manager>();
+			instance.manager = GameplayManager.Instance.GetManager<Grid.Manager>();
 			instance.nodes = new PathNode[instance.manager.SizeX, instance.manager.SizeZ];
 
 			Vector3 posNode = Vector3.up;
@@ -114,6 +114,7 @@ namespace IronSideStudio.CrazyTrafficJam.Pathfinding
 				path.Add(currentNode.Node);
 				currentNode = currentNode.Parent;
 			}
+			path.Add(startNode.Node);
 			Grid.Node[] waypoints = path.ToArray();
 			System.Array.Reverse(waypoints);
 			return waypoints;

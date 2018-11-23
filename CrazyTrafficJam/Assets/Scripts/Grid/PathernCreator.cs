@@ -20,8 +20,8 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public override void Construct()
 		{
-			Manager grid = CoreManager.Instance.GetManager<Manager>();
-			CoreManager.Instance.GetManager<TimeManager>().AddOnWeekPass(TimePass);
+			Manager grid = GameplayManager.Instance.GetManager<Manager>();
+			GameplayManager.Instance.GetManager<TimeManager>().AddOnWeekPass(TimePass);
 
 			size = new Vector3Int(grid.SizeX, 0, grid.SizeZ);
 			usedNodes = new List<Node>();
@@ -29,7 +29,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public void Initialize()
 		{
-			Manager grid = CoreManager.Instance.GetManager<Manager>();
+			Manager grid = GameplayManager.Instance.GetManager<Manager>();
 			Vector3 nodePosition = new Vector3();
 			Vector3Int pos = new Vector3Int(Mathf.CeilToInt(size.x * .5f), 0, Mathf.CeilToInt(size.z * .5f));
 
@@ -49,7 +49,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			useNode = grid.GetNode(pos);
 		}
 
-		public void MUpdate()
+		void IUpdatable.MUpdate()
 		{
 			randNode = Random.Range(0, usedNodes.Count);
 			randPathern = Random.Range(0, allPathern.Length);

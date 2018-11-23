@@ -7,19 +7,31 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 {
 	public class UiGridNodeSelection : MonoBehaviour, IInitializable, ICleanable
 	{
+		[System.Serializable]
+		private struct SNodeType
+		{
+			public Button button;
+			public Grid.NodeType nodeType;
+		}
+
 		[SerializeField]
-		private Button[] typeSelection;
+		private SNodeType[] buttonSelection;
 		private Grid.Node gridNodeSelected;
 
 		public void Initialize()
 		{
-			CoreManager.Instance.GetManager<InputManager>().AddOnTouchClick(TouchDown);
+			GameplayManager.Instance.GetManager<InputManager>().AddOnTouchClick(TouchDown);
 
-			for (int i = 0 ; i < typeSelection.Length ; ++i)
+			foreach (SNodeType sNodeType in buttonSelection)
 			{
-				int intDelegate = i;
-				typeSelection[i].onClick.AddListener(delegate {
-					ChangeType((Grid.ENodeType)intDelegate);
+				if (sNodeType.nodeType == null)
+				{
+					sNodeType.button.gameObject.SetActive(false);
+					continue;
+				}
+				sNodeType.button.GetComponent<Image>().color = sNodeType.nodeType.color;
+				sNodeType.button.onClick.AddListener(delegate {
+					ChangeType(sNodeType.nodeType);
 					gameObject.SetActive(false);
 				});
 			}
@@ -28,14 +40,14 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Clean()
 		{
-			CoreManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
+			GameplayManager.Instance.GetManager<InputManager>().RemoveOnTouchClick(TouchDown);
 		}
 
-		private void ChangeType(Grid.ENodeType nodeType)
+		private void ChangeType(Grid.NodeType nodeType)
 		{
 			if (gridNodeSelected == null)
 				return;
-			gridNodeSelected.SetType(nodeType);
+			nodeType.AddNode(gridNodeSelected);
 		}
 
 		private void TouchDown(SInputTouch touch)

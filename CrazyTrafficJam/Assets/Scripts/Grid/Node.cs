@@ -6,16 +6,15 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 {
 	public class Node : MonoBehaviour
 	{
-		private NodeType[] allTypes;
 		private NodeType currentType;
 		public ENodeType NodeType => currentType.Type;
 
-		public void Initialize(int x, int z, NodeType[] nodeTypes)
+		private IDriveable roadDriveable;
+
+		public void Initialize(int x, int z)
 		{
 			name = "GridNode " + x + ", " + z;
 			transform.position = new Vector3(x, 0f, z);
-			allTypes = nodeTypes;
-			SetType(ENodeType.None);
 		}
 
 		public Vector3 GetPosition()
@@ -25,18 +24,13 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public void SetType(ENodeType newType)
 		{
-			foreach (NodeType t in allTypes)
-			{
-				if (t.Type == newType)
-				{
-					currentType?.RemoveNode(this);
-					t.AddNode(this);
-					currentType = t;
-					gameObject.GetComponent<Renderer>().material.color = t.color;
-					break;
-				}
-			}
+		}
 
+		public void SetType(NodeType nodeType, GameObject obj = null)
+		{
+			currentType?.RemoveNode(this);
+			currentType = nodeType;
+			roadDriveable = obj?.GetComponent<IDriveable>();
 			InvokeOnChangeType();
 		}
 
@@ -48,6 +42,20 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			};
 
 			return save;
+		}
+
+		public Vector3[] GetWaypoint(Vector3 from, Vector3 to)
+		{
+			if (roadDriveable == null)
+				return null;
+			return roadDriveable.GetWaypoint(from, to);
+		}
+
+		public bool CanDrive(Car.Driver driver)
+		{
+			if (roadDriveable == null)
+				return false;
+			return roadDriveable.CanDrive(driver);
 		}
 
 		#region Events

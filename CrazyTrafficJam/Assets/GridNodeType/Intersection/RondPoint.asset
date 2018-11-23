@@ -8,9 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9063fb48fe4cedd42a5b555a3d04eebc, type: 3}
-  m_Name: CrossRoad
+  m_Script: {fileID: 11500000, guid: 1e4d2821cbc175a468e1c1d290fdf732, type: 3}
+  m_Name: RondPoint
   m_EditorClassIdentifier: 
   nodeType: 3
-  assetMode: {fileID: 1256447082562754, guid: e6daaae5dbf3a7d4781c68b1b2fa0723, type: 2}
-  color: {r: 0, g: 0, b: 0, a: 1}
+  assetMode: {fileID: 1219444641956778, guid: 5962463ee030c214ab8e39e115f77a6a, type: 2}
+  color: {r: 1, g: 0.5735294, b: 0.88235307, a: 1}

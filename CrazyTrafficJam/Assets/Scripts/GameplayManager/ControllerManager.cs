@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
-	public class ControllerManager : AManager, IInitializable
+	public class ControllerManager : AManager, IInitializable, ICleanable
 	{
 		[SerializeField]
 		private Transform camTrans;
@@ -16,14 +16,25 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		public override void Construct()
 		{
+			Grid.Manager gridManager = GameplayManager.Instance.GetManager<Grid.Manager>();
+
+			camTrans.position = new Vector3(gridManager.SizeX * .5f, camTrans.position.y, gridManager.SizeZ * .5f);
 		}
 
 		public void Initialize()
 		{
-			InputManager input = CoreManager.Instance.GetManager<InputManager>();
+			InputManager input = GameplayManager.Instance.GetManager<InputManager>();
 
 			input.AddOnTouchDown(TouchDown);
 			input.AddOnTouchMove(TouchMove);
+		}
+
+		public void Clean()
+		{
+			InputManager input = GameplayManager.Instance.GetManager<InputManager>();
+
+			input.RemoveOnTouchDown(TouchDown);
+			input.RemoveOnTouchMove(TouchMove);
 		}
 
 		private void TouchDown(SInputTouch touch)

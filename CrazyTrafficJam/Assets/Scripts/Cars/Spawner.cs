@@ -10,15 +10,15 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		[System.Serializable]
 		private struct SCar
 		{
-			public Conduct car;
+			public Driver car;
 			[Range(1, 100)]
 			public int probability;
-			public List<Conduct> poolCar;
+			public List<Driver> poolCar;
 			public Grid.Node desination;
 
-			public Conduct CreateCar(Vector3 position)
+			public Driver CreateCar(Vector3 position)
 			{
-				foreach (Conduct c in poolCar)
+				foreach (Driver c in poolCar)
 				{
 					if (!c.gameObject.activeSelf)
 					{
@@ -27,14 +27,14 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 						return c;
 					}
 				}
-				Conduct newCar = Instantiate(car, position, Quaternion.identity);
+				Driver newCar = Instantiate(car, position, Quaternion.identity);
 				poolCar.Add(newCar);
 				return newCar;
 			}
 
 			public void Update()
 			{
-				foreach (Conduct c in poolCar)
+				foreach (Driver c in poolCar)
 				{
 					if (c.Enable)
 						c.MUpdate();
@@ -51,7 +51,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		public void Initialize()
 		{
-			Grid.Manager grid = CoreManager.Instance.GetManager<Grid.Manager>();
+			Grid.Manager grid = GameplayManager.Instance.GetManager<Grid.Manager>();
 			districts = new List<Grid.Node>();
 			Vector3 nodePosition = new Vector3();
 
@@ -69,7 +69,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 			for (int i = 0 ; i < carPrefab.Length ; ++i)
 			{
-				carPrefab[i].poolCar = new List<Conduct>();
+				carPrefab[i].poolCar = new List<Driver>();
 			}
 		}
 
@@ -97,11 +97,11 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			return districts[index];
 		}
 
-		public Conduct Spawn(Grid.Node node)
+		public Driver Spawn(Grid.Node node)
 		{
 			int index = Random.Range(0, carPrefab.Length);
 			Grid.Node destination = GetDestination(node);
-			Conduct obj = carPrefab[index].CreateCar(node.GetPosition() + Vector3.up);
+			Driver obj = carPrefab[index].CreateCar(node.GetPosition() + Vector3.up * .51f);
 			Grid.Node[] p = Pathfinding.PathFinder.GetPath(node.GetPosition(), destination.GetPosition());
 
 			obj.SetPath(p);
@@ -112,7 +112,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		}
 
 		#region events
-		public delegate void SpawnCar(Conduct car);
+		public delegate void SpawnCar(Driver car);
 		private event SpawnCar OnSpawn;
 
 		#region OnSpawn
@@ -126,7 +126,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			OnSpawn -= func;
 		}
 
-		public void InvokeOnSpawn(Conduct car)
+		public void InvokeOnSpawn(Driver car)
 		{
 			OnSpawn?.Invoke(car);
 		}

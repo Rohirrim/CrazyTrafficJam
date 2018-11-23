@@ -1,17 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
-	public class LevelManager : AManager
+	public interface IDriveable
 	{
-		public override void Construct()
-		{
+		Vector3[] GetWaypoint(Vector3 from, Vector3 to);
 
-		}
-
-
+		bool CanDrive(Car.Driver driver);
 	}
 }
