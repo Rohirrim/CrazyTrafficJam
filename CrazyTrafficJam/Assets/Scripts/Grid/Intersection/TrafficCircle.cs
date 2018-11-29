@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam.Grid
 {
-	public class IntersectionNode : SimpleRoad, IUpdatable
+	public class TrafficCircle : SimpleRoad, IUpdatable
 	{
 		protected HashSet<SDriverIn> driversIn;
 
@@ -17,11 +17,11 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 
 		public override bool CanDrive(Car.Driver driver)
 		{
-			Vector3 driverRight = driver.transform.right;
+			Vector3 driverLeft = -driver.transform.right;
 			Vector3 startRaycast = transform.position + driver.transform.forward * Constante.Gameplay.roadSpace;
 			startRaycast.y = driver.transform.position.y;
 
-			if (Physics.Raycast(startRaycast, driverRight, Constante.Gameplay.securityDistance * 10f, LayerMask.GetMask(Constante.Layer.Car)))
+			if (Physics.Raycast(startRaycast, driverLeft, Constante.Gameplay.securityDistance * 10f, LayerMask.GetMask(Constante.Layer.Car)))
 			{
 				SDriverIn sDriver = new SDriverIn {
 					driver = driver,

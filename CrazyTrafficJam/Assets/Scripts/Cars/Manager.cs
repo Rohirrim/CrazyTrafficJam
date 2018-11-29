@@ -26,6 +26,10 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		public void Clean()
 		{
+			for (int i = 0 ; i < allSpawner.Length ; ++i)
+			{
+				allSpawner[i].Clean();
+			}
 			Pathfinding.PathFinder.DeleteInstance();
 		}
 

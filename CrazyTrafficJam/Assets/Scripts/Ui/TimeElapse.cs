@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace IronSideStudio.CrazyTrafficJam.UI
 {
-	public class UiTimeElapse : MonoBehaviour, IInitializable, ICleanable
+	public class TimeElapse : MonoBehaviour, IInitializable, ICleanable
 	{
 		[SerializeField]
 		private Text dayElapse;

@@ -36,22 +36,22 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		public override bool CanDrive(Driver driver)
 		{
 			Renderer rendLight = topLight;
-			float distance = Vector3.Distance(transform.position, rendLight.transform.position);
+			float distance = Vector3.Distance(driver.transform.position, rendLight.transform.position);
 
-			if (Vector3.Distance(transform.position, bottomLight.transform.position) < distance)
+			if (Vector3.Distance(driver.transform.position, bottomLight.transform.position) < distance)
 			{
 				rendLight = bottomLight;
-				distance = Vector3.Distance(transform.position, rendLight.transform.position);
+				distance = Vector3.Distance(driver.transform.position, rendLight.transform.position);
 			}
-			if (Vector3.Distance(transform.position, leftLight.transform.position) < distance)
+			if (Vector3.Distance(driver.transform.position, leftLight.transform.position) < distance)
 			{
 				rendLight = leftLight;
-				distance = Vector3.Distance(transform.position, rendLight.transform.position);
+				distance = Vector3.Distance(driver.transform.position, rendLight.transform.position);
 			}
-			if (Vector3.Distance(transform.position, rightLight.transform.position) < distance)
+			if (Vector3.Distance(driver.transform.position, rightLight.transform.position) < distance)
 			{
 				rendLight = rightLight;
-				distance = Vector3.Distance(transform.position, rendLight.transform.position);
+				distance = Vector3.Distance(driver.transform.position, rendLight.transform.position);
 			}
 
 			return rendLight.material.color == Color.green;

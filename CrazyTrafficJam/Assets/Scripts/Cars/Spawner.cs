@@ -5,7 +5,7 @@ using UnityEngine;
 namespace IronSideStudio.CrazyTrafficJam.Car
 {
 	[CreateAssetMenu(fileName = "Car", menuName = "Car")]
-	public class Spawner : ScriptableObject, IInitializable, IUpdatable
+	public class Spawner : ScriptableObject, IInitializable, IUpdatable, ICleanable
 	{
 		[System.Serializable]
 		private struct SCar
@@ -77,6 +77,15 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		{
 			foreach (SCar c in carPrefab)
 				c.Update();
+		}
+
+		public void Clean()
+		{
+			districts.Clear();
+			for (int i = 0 ; i < carPrefab.Length ; ++i)
+			{
+				carPrefab[i].poolCar.Clear();
+			}
 		}
 
 		private void AddDesination(Grid.Node node)

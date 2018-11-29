@@ -22,10 +22,6 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			return transform.position;
 		}
 
-		public void SetType(ENodeType newType)
-		{
-		}
-
 		public void SetType(NodeType nodeType, GameObject obj = null)
 		{
 			currentType?.RemoveNode(this);

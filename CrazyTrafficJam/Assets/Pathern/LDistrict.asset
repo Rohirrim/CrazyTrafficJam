@@ -18,8 +18,46 @@ MonoBehaviour:
   - position: {x: 1, y: 0, z: 0}
     type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
   - position: {x: 2, y: 0, z: 0}
-    type: {fileID: 11400000, guid: 292e21d336404c841b815f3dc208fb55, type: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 5, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 6, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 7, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 8, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 1916c23030c5a9846ac7514c7dc44212, type: 2}
+  - position: {x: 9, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 10, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 13, y: 0, z: 0}
+    type: {fileID: 11400000, guid: 957e7eb38794b1749adefe41a5a2cb9e, type: 2}
   - position: {x: 2, y: 0, z: 1}
     type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
-  - position: {x: 2, y: 0, z: 2}
+  - position: {x: 3, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 4, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 5, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 1916c23030c5a9846ac7514c7dc44212, type: 2}
+  - position: {x: 8, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 10, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 13, y: 0, z: 1}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 5, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 6, y: 0, z: 2}
     type: {fileID: 11400000, guid: 957e7eb38794b1749adefe41a5a2cb9e, type: 2}
+  - position: {x: 8, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 957e7eb38794b1749adefe41a5a2cb9e, type: 2}
+  - position: {x: 10, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 11, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 12, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}
+  - position: {x: 13, y: 0, z: 2}
+    type: {fileID: 11400000, guid: 3022064c3d51eb546a570934e9b48387, type: 2}

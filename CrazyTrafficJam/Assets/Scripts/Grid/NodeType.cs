@@ -28,6 +28,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		private GameObject assetMode;
 		public Color color;
 
+		public int Count => nodes.Count;
 		public bool Enable => nodes.Count > 0;
 
 		public ENodeType Type => nodeType;

@@ -20,7 +20,7 @@ namespace IronSideStudio.CrazyTrafficJam
 			}
 		}
 
-		public static T[] GetComponentsOnlyInChildren<T>(this MonoBehaviour script) where T : class
+		public static T[] GetComponentsOnlyInChildren<T>(this MonoBehaviour script, bool includeInactive = false, bool firstDepthOnly = false) where T : class
 		{
 			List<T> comps = new List<T>();
 
@@ -30,7 +30,13 @@ namespace IronSideStudio.CrazyTrafficJam
 
 			foreach (Transform child in script.transform)
 			{
-				comps.AddRange(child.GetComponentsInChildren<T>());
+				if (firstDepthOnly)
+				{
+					if (child.parent == script.transform)
+						comps.AddRange(child.GetComponents<T>());
+				}
+				else
+					comps.AddRange(child.GetComponentsInChildren<T>(includeInactive));
 			}
 
 			return comps.ToArray();

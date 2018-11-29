@@ -31,7 +31,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		private int day;
 		private SDayInfo dayInfo;
 
-		public bool Enable { get { return enabled; } }
+		public bool Enable => enabled;
 
 		public override void Construct()
 		{

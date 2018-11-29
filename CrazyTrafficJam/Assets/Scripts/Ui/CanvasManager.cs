@@ -11,8 +11,8 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public override void Construct()
 		{
-			compInitializable = this.GetComponentsOnlyInChildren<IInitializable>();
-			compCleanable = this.GetComponentsOnlyInChildren<ICleanable>();
+			compInitializable = this.GetComponentsOnlyInChildren<IInitializable>(false, true);
+			compCleanable = this.GetComponentsOnlyInChildren<ICleanable>(false, true);
 		}
 
 		public void Initialize()

@@ -60,15 +60,16 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		private bool TryExtremity(Vector3 positionStart)
 		{
 			RaycastHit hit;
-			foreach (SInfo n in nodes)
+			positionStart += Vector3.up;
+			foreach (SInfo nodePathern in nodes)
 			{
-				if (!Physics.Raycast(positionStart + n.position + Vector3.up, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
+				if (!Physics.Raycast(positionStart + nodePathern.position, Vector3.down, out hit, LayerMask.GetMask(Constante.Layer.GridNode)))
 					return false;
 				Node gridNode = hit.transform.GetComponent<Node>();
 				if (gridNode == null)
 					return false;
 
-				switch (n.type.Type)
+				switch (nodePathern.type.Type)
 				{
 					case ENodeType.None:
 						continue;
@@ -102,6 +103,8 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 				{
 					Node gridNode = hit.transform.GetComponent<Node>();
 					if (gridNode == null)
+						continue;
+					if (gridNode.NodeType == ENodeType.Intersection && n.type.Type == ENodeType.Intersection)
 						continue;
 					n.type.AddNode(gridNode);
 				}

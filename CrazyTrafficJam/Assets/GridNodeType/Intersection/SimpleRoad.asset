@@ -9,8 +9,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e4d2821cbc175a468e1c1d290fdf732, type: 3}
-  m_Name: RondPoint
+  m_Name: SimpleRoad
   m_EditorClassIdentifier: 
   nodeType: 3
-  assetMode: {fileID: 1219444641956778, guid: 5962463ee030c214ab8e39e115f77a6a, type: 2}
-  color: {r: 1, g: 0.5735294, b: 0.88235307, a: 1}
+  assetMode: {fileID: 1099272544865168, guid: 8aa9dd28e4cd8a5428006baea74687bb, type: 2}
+  color: {r: 0.21323532, g: 0.21323532, b: 0.21323532, a: 1}

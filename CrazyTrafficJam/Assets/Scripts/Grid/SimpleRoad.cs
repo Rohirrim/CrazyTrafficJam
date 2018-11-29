@@ -6,6 +6,12 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 {
 	public class SimpleRoad : MonoBehaviour, IDriveable
 	{
+		protected struct SDriverIn
+		{
+			public Car.Driver driver;
+			public float time;
+		}
+
 		[SerializeField]
 		protected Transform straight;
 		[SerializeField]
