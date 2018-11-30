@@ -25,6 +25,12 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 				gameObject.SetActive(false);
 				return;
 			}
+
+			if (count == -1)
+			{
+				countTxt.transform.parent.gameObject.SetActive(false);
+			}
+
 			selectBtn.onClick.AddListener(Select);
 			nodeSelection = gameObject.GetComponentInParent<GridNodeSelection>();
 			nodeSelection.AddOnOpenSelection(OnOpen);
@@ -38,7 +44,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Select()
 		{
-			if (count == nodeType.Count)
+			if (count != -1 && count == nodeType.Count)
 				return;
 			nodeType.AddNode(nodeSelection.GridSelected);
 		}
@@ -50,11 +56,15 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		private void OnOpen(bool b)
 		{
-			if (!b)
-				return;
-
 			countTxt.text = (count - nodeType.Count).ToString();
-			selectBtn.interactable = nodeType ? count > nodeType.Count : false;
+
+			// revoir ces conditions ?
+			if (nodeType.Contains(nodeSelection.GridSelected))
+				selectBtn.interactable = false;
+			else if (count != -1)
+				selectBtn.interactable = nodeType ? count > nodeType.Count : false;
+			else
+				selectBtn.interactable = true;
 		}
 	}
 }

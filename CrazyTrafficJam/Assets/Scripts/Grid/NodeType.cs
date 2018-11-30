@@ -73,7 +73,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			}
 		}
 
-		private bool Contains(Node n)
+		public bool Contains(Node n)
 		{
 			foreach (SNode node in nodes)
 			{

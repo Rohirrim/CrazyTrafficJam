@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e4d2821cbc175a468e1c1d290fdf732, type: 3}
-  m_Name: SimpleRoad
+  m_Name: SimpleIntersection
   m_EditorClassIdentifier: 
   nodeType: 3
   assetMode: {fileID: 1099272544865168, guid: 8aa9dd28e4cd8a5428006baea74687bb, type: 2}

@@ -25,7 +25,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		private void Init()
 		{
 			offset.x = 15f;
-			offset.y = 80f;
+			offset.y = 100f;
 			space.x = 1f;
 			space.y = 1f;
 
@@ -66,6 +66,11 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		{
 			if (nodesArray == null)
 				Init();
+
+			GUI.enabled = false;
+			EditorGUILayout.ObjectField("Script:", MonoScript.FromScriptableObject((Pathern)target), typeof(Pathern), false);
+			GUI.enabled = true;
+
 			CustomInspector();
 		}
 

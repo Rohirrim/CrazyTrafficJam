@@ -70,6 +70,11 @@ namespace IronSideStudio.CrazyTrafficJam
 			}
 		}
 
+		public void QuitGame()
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene(Constante.Scene.MainMenu);
+		}
+
 		public T GetManager<T>() where T : AManager
 		{
 			T searchManager = null;
