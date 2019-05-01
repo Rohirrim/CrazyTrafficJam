@@ -12,6 +12,9 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			public float time;
 		}
 
+        [Header("Pas touche !")]
+        [Range(0.1f, 3f)]
+        public float speedLimit = 1.6f;
 		[SerializeField]
 		protected Transform straight;
 		[SerializeField]

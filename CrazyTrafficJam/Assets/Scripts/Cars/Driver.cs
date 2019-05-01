@@ -16,18 +16,24 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		[SerializeField]
 		private Transform frontCar;
+        [SerializeField]
 		private Tween pathTween;
 
-		private Grid.Node[] nodePath;
-		private int indexNodePath;
+        [SerializeField]
+        private Grid.Node[] nodePath;
+        [SerializeField]
+        private int indexNodePath;
 
-		private Grid.Node node;
-		private Grid.Node previousNode;
+        [SerializeField]
+        private Grid.Node node;
+        [SerializeField]
+        private Grid.Node previousNode;
 
 		public void MUpdate()
 		{
 			Drive();
 			Patience();
+            SetSpeed();
 		}
 
 		private void Drive()
@@ -52,7 +58,45 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			}
 		}
 
-		private bool SecurityDistance()
+        public void SetSpeed()
+        {
+            if(currentRoad() != null)
+            {
+                speed = currentRoad().speedLimit;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private IronSideStudio.CrazyTrafficJam.Grid.SimpleRoad currentRoad()
+        {
+            if(nodePath.Length > 0)
+            {
+                if (indexNodePath < nodePath.Length)
+                {
+                    if (nodePath[indexNodePath].transform.GetChild(0).GetComponent<IronSideStudio.CrazyTrafficJam.Grid.SimpleRoad>() != null)
+                    {
+                        return nodePath[indexNodePath].transform.GetChild(0).GetComponent<IronSideStudio.CrazyTrafficJam.Grid.SimpleRoad>();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private bool SecurityDistance()
 		{
 			if (!Physics.Raycast(frontCar.position, frontCar.forward, Constante.Gameplay.securityDistance, LayerMask.GetMask(Constante.Layer.Car)))
 			{
