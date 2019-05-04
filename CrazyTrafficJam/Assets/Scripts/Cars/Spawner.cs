@@ -106,7 +106,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			return districts[index];
 		}
 
-		public Driver Spawn(Grid.Node node)
+		/*public Driver Spawn(Grid.Node node)
 		{
 			int index = Random.Range(0, carPrefab.Length);
 			Grid.Node destination = GetDestination(node);
@@ -118,7 +118,22 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			InvokeOnSpawn(obj);
 
 			return obj;
-		}
+		}*/
+
+        public Driver Spawn(Grid.Node node, Grid.Node destination)
+        {
+            int index = Random.Range(0, carPrefab.Length);
+            //Grid.Node newDestination = destination;
+            Driver obj = carPrefab[index].CreateCar(node.GetPosition() + Vector3.up * .51f);
+
+            Grid.Node[] p = Pathfinding.PathFinder.GetPath(node.GetPosition(), destination.GetPosition());
+
+            obj.SetPath(p);
+
+            InvokeOnSpawn(obj);
+
+            return obj;
+        }
 
 		#region events
 		public delegate void SpawnCar(Driver car);

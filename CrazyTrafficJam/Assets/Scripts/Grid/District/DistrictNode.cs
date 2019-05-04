@@ -22,10 +22,10 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		public override void Initialize()
 		{
 			base.Initialize();
-			GameplayManager.Instance.GetManager<TimeManager>().AddOnDayPass(Spawn);
+			//GameplayManager.Instance.GetManager<TimeManager>().AddOnDayPass(Spawn);
 		}
 
-		private void Spawn(SDayInfo dayInfo)
+		private void Spawn(SDayInfo dayInfo)//OLD
 		{
 			for (int i = 0 ; i < spawnInfo.Length ; ++i)
 			{
@@ -35,7 +35,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 				{
 					foreach (SNode n in nodes)
 					{
-						spawn.carSpawner.Spawn(n.node);
+						//spawn.carSpawner.Spawn(n.node);
 					}
 				}
 			}

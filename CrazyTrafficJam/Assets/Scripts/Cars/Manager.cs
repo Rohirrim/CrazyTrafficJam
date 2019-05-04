@@ -6,8 +6,12 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 {
 	public class Manager : AManager, IInitializable, ICleanable, IUpdatable
 	{
+        public static Manager Instance;
+
 		[SerializeField]
 		private Spawner[] allSpawner;
+
+        public List<DistrictScript> allDistricts;
 
 		public bool Enable { get { return enabled; } }
 
@@ -17,6 +21,8 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		public void Initialize()
 		{
+            Instance = this;
+
 			for (int i = 0 ; i < allSpawner.Length ; ++i)
 			{
 				allSpawner[i].Initialize();
@@ -39,6 +45,27 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			{
 				c.MUpdate();
 			}
+
+            CheckAllDistricts();
 		}
+
+        public void UpdateDistrictHour(DayTime currentTime)
+        {
+            foreach(DistrictScript D in allDistricts)
+            {
+                D.SetDistrictTraffic(currentTime);
+            }
+        }
+
+        public void CheckAllDistricts()//Dans le cas où il y a un district
+        {
+            for(int i = 0; i < allDistricts.Count; i++)
+            {
+                if(allDistricts[i] == null)
+                {
+                    allDistricts.Remove(allDistricts[i]);
+                }
+            }
+        }
 	}
 }

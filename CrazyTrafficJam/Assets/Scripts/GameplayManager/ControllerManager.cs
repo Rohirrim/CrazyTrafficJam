@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
@@ -11,6 +13,10 @@ namespace IronSideStudio.CrazyTrafficJam
 		[SerializeField]
 		private float speed;
 		private Vector3 oldPosition;
+
+        private Camera mainCam;
+
+        public Slider zoomSlider;
 
 		public bool Enable { get { return enabled; } }
 
@@ -27,6 +33,9 @@ namespace IronSideStudio.CrazyTrafficJam
 
 			input.AddOnTouchDown(TouchDown);
 			input.AddOnTouchMove(TouchMove);
+
+            mainCam = Camera.main;
+            InitialiseZoomValue();
 		}
 
 		public void Clean()
@@ -39,16 +48,36 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		private void TouchDown(SInputTouch touch)
 		{
-			oldPosition = touch.screenPosition;
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                oldPosition = touch.screenPosition;
+            }
 		}
 
 		private void TouchMove(SInputTouch touch)
 		{
-			Vector3 direction = oldPosition - touch.screenPosition;
-			direction.z = direction.y;
-			direction.y = 0f;
-			camTrans.position += direction * speed;
-			oldPosition = touch.screenPosition;
-		}
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                Vector3 direction = oldPosition - touch.screenPosition;
+                direction.z = direction.y;
+                direction.y = 0f;
+                camTrans.position += direction * speed;
+                oldPosition = touch.screenPosition;
+            }
+        }
+
+        void InitialiseZoomValue()
+        {
+            zoomSlider.maxValue = GameplayManager.Instance.GetManager<InputManager>().maxZoom;
+            zoomSlider.minValue = GameplayManager.Instance.GetManager<InputManager>().minZoom;
+
+            zoomSlider.value = GameplayManager.Instance.GetManager<InputManager>().maxZoom;
+            ChangeZoomValue();
+        }
+
+        public void ChangeZoomValue()
+        {
+            mainCam.fieldOfView = zoomSlider.value;
+        }
 	}
 }

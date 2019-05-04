@@ -16,6 +16,10 @@ namespace IronSideStudio.CrazyTrafficJam
 		private Vector3 mousePosition;
 		private Vector3 oldPosition;
 
+        public float zoomSpeed = 0.5f;
+        public float minZoom, maxZoom;
+
+
 		public override void Construct()
 		{
 			enabled = true;
@@ -46,7 +50,29 @@ namespace IronSideStudio.CrazyTrafficJam
 				MouseMove(mousePosition);
 				oldPosition = mousePosition;
 			}
+
+            if(Input.GetAxis("Mouse ScrollWheel") != 0)
+            {
+                mainCamera.fieldOfView += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+                mainCamera.fieldOfView = Mathf.Clamp(mainCamera.fieldOfView, minZoom, maxZoom);
+            }
 #endif
+            if(Input.touchCount == 2)
+            {
+                Touch touch0 = Input.GetTouch(0);
+                Touch touch1 = Input.GetTouch(1);
+
+                Vector2 touch0PreviousPos = touch0.position - touch0.deltaPosition;
+                Vector2 touch1PreviousPos = touch1.position - touch1.deltaPosition;
+
+                float prevTouchMagDelta = (touch0PreviousPos - touch1PreviousPos).magnitude;
+                float touchMagDelta = (touch0.position - touch1.position).magnitude;
+
+                float deltaMagnitudeDiff = prevTouchMagDelta - touchMagDelta;
+
+                mainCamera.fieldOfView += deltaMagnitudeDiff * zoomSpeed;
+                mainCamera.fieldOfView = Mathf.Clamp(mainCamera.fieldOfView, minZoom, maxZoom);
+            }
 		}
 
 		private void TouchDown(Vector3 position)

@@ -7,8 +7,10 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 {
 	public class GridNodeSelection : MonoBehaviour, IInitializable, ICleanable
 	{
+        public static GridNodeSelection Instance;
+
 		[SerializeField]
-		private Transform typeSelectionTransform;
+		public Transform typeSelectionTransform;
 		private SelectType[] buttonSelection;
 
 		private Grid.Node gridNodeSelected;
@@ -16,6 +18,8 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Initialize()
 		{
+            Instance = this;
+
 			GameplayManager.Instance.GetManager<InputManager>().AddOnTouchClick(TouchDown);
 			GameplayManager.Instance.GetManager<TimeManager>().AddOnWeekPass(OnTimePass);
 			buttonSelection = typeSelectionTransform.GetComponentsInChildren<SelectType>();
@@ -61,7 +65,7 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 				if (gridNodeSelected)
 				{
 					typeSelectionTransform.gameObject.SetActive(gridNodeSelected.NodeType == Grid.ENodeType.Intersection);
-					typeSelectionTransform.position = Camera.main.WorldToScreenPoint(gridNodeSelected.GetPosition() + Vector3.up * .5f);
+					//typeSelectionTransform.position = Camera.main.WorldToScreenPoint(gridNodeSelected.GetPosition() + Vector3.up * .5f);
 				}
 			}
 			InvokeOnOpenSelection(gameObject.activeInHierarchy);

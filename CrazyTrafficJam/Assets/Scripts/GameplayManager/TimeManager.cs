@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
@@ -24,6 +25,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		Sunday = 1 << 6
 	}
 
+    [Serializable]
 	public struct SDayInfo
 	{
 		public int week;
@@ -33,12 +35,13 @@ namespace IronSideStudio.CrazyTrafficJam
 
 	public class TimeManager : AManager, IInitializable, IUpdatable, ICleanable
 	{
+        [Header("Pas touche")]
 		[SerializeField]
 		private float dayTime;
 
-		private float t;
-		private int day;
-		private SDayInfo dayInfo;
+		public float t;
+		public int day;
+		public SDayInfo dayInfo;
 
 		public bool Enable => enabled;
 
@@ -72,8 +75,10 @@ namespace IronSideStudio.CrazyTrafficJam
 		{
 			dayInfo.hour = Mathf.Lerp(0f, 24f, t);
 			InvokeOnHourPass();
+            IronSideStudio.CrazyTrafficJam.Car.Manager.Instance.UpdateDistrictHour(CurrentDayTime());
 
-			t += Time.deltaTime / dayTime;
+
+            t += Time.deltaTime / dayTime;
 			if (t >= 1f)
 			{
 				t = 0f;
@@ -102,8 +107,28 @@ namespace IronSideStudio.CrazyTrafficJam
 		public void StartTimer()
 		{
 			enabled = true;
-			InvokeOnWeekPass();
+            InvokeOnWeekPass();
 		}
+
+        public DayTime CurrentDayTime()
+        {
+            if(dayInfo.hour >= 6 && dayInfo.hour < 14)
+            {
+                return DayTime.MATIN;
+            }
+            else if(dayInfo.hour >= 14 && dayInfo.hour < 19)
+            {
+                return DayTime.APRESMIDI;
+            }
+            else if(dayInfo.hour >= 19 && dayInfo.hour < 22)
+            {
+                return DayTime.SOIREE;
+            }
+            else
+            {
+                return DayTime.NUIT;
+            }
+        }
 
 		#region Events
 		public delegate void TimePass(SDayInfo dayInfo);
@@ -120,7 +145,7 @@ namespace IronSideStudio.CrazyTrafficJam
 		public void RemoveOnHourPass(TimePass func)
 		{
 			OnHourPass -= func;
-		}
+        }
 
 		private void InvokeOnHourPass()
 		{

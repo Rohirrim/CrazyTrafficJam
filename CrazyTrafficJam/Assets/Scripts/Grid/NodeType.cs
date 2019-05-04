@@ -53,6 +53,11 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			}
 			n.SetType(this, sn.road);
 			nodes.Add(sn);
+
+            if (IronSideStudio.CrazyTrafficJam.UI.GridNodeSelection.Instance != null)
+            {
+                IronSideStudio.CrazyTrafficJam.UI.GridNodeSelection.Instance.typeSelectionTransform.gameObject.SetActive(false);
+            }
 		}
 
 		public void RemoveNode(Node n)
