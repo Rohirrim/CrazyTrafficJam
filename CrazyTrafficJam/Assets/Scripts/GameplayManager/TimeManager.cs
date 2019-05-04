@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace IronSideStudio.CrazyTrafficJam
 {
+    public enum DayTime
+    {
+        MATIN,
+        APRESMIDI,
+        SOIREE,
+        NUIT,
+
+    }
+
 	public enum EDay
 	{
 		Monday = 1 << 0,

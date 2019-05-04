@@ -11,10 +11,10 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		private struct SCar
 		{
 			public Driver car;
-			[Range(1, 100)]
-			public int probability;
+            [Range(1, 100)]
+            public int probability;
 			public List<Driver> poolCar;
-			public Grid.Node desination;
+			public Grid.Node destination;
 
 			public Driver CreateCar(Vector3 position)
 			{
@@ -63,7 +63,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 					nodePosition.x = x;
 					Grid.Node node = grid.GetNode(nodePosition);
 					if (node)
-						node.AddOnChangeType(AddDesination);
+						node.AddOnChangeType(AddDestination);
 				}
 			}
 
@@ -88,7 +88,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			}
 		}
 
-		private void AddDesination(Grid.Node node)
+		private void AddDestination(Grid.Node node)
 		{
 			if (node.NodeType != Grid.ENodeType.District)
 				districts.Remove(node);
