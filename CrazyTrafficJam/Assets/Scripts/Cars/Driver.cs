@@ -13,6 +13,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 
 		private float timer;
 		public bool Enable => gameObject.activeInHierarchy;
+        public bool isStopped = false;
 
 		[SerializeField]
 		private Transform frontCar;
@@ -49,12 +50,14 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 		{
 			if (pathTween.IsPlaying())
 				return;
+            isStopped = true;
 			timer += Time.deltaTime;
 			if (timer > 2.5f)
 			{
 				//gameObject.SetActive(false);
 				node = null;
 				pathTween.Play();
+                isStopped = false;
 			}
 		}
 

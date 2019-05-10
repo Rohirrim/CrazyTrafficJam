@@ -65,23 +65,5 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			leftLight.material.color = !driveTop ? Color.red : Color.green;
 			rightLight.material.color = !driveTop ? Color.red : Color.green;
 		}
-
-        private void ChooseLightColor(Color newColor)
-        {
-            if(newColor == Color.red)
-            {
-                topLight.material.color = Color.red;
-                bottomLight.material.color = Color.red;
-                leftLight.material.color = Color.red;
-                rightLight.material.color = Color.red;
-            }
-            else
-            {
-                topLight.material.color = Color.green;
-                bottomLight.material.color = Color.green;
-                leftLight.material.color = Color.green;
-                rightLight.material.color = Color.green;
-            }
-        }
 	}
 }

@@ -131,6 +131,7 @@ namespace IronSideStudio.CrazyTrafficJam.Car
             obj.SetPath(p);
 
             InvokeOnSpawn(obj);
+            VictoryConditions.Instance.allCars.Add(obj);
 
             return obj;
         }

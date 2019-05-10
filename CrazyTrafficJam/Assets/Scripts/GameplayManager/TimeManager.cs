@@ -45,6 +45,8 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		public bool Enable => enabled;
 
+        public static TimeManager Instance;
+
 		public override void Construct()
 		{
 			dayInfo = new SDayInfo();
@@ -52,6 +54,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
 		public void Initialize()
 		{
+            Instance = this;
 			StopTimer();
 			dayInfo.hour = 0f;
 			dayInfo.day = EDay.Monday;
