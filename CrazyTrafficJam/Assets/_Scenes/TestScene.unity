@@ -1419,6 +1419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defeatPercentage: 30
   debugPercentage: 0
+  minimumCarsNumber: 10
   allCars: []
   victoryPannel: {fileID: 0}
   defeatPannel: {fileID: 213642277}

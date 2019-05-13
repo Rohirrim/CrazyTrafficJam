@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,5 +13,6 @@ MonoBehaviour:
   m_Name: TrafficLights
   m_EditorClassIdentifier: 
   nodeType: 3
-  assetMode: {fileID: 1872273377075690, guid: c5aee1d92c79de946999a38d3e62b1f6, type: 2}
+  assetMode: {fileID: 1872273377075690, guid: c5aee1d92c79de946999a38d3e62b1f6, type: 3}
   color: {r: 1, g: 0, b: 0, a: 1}
+  myName: Traffic Lights

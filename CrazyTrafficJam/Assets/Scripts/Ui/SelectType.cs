@@ -20,11 +20,29 @@ namespace IronSideStudio.CrazyTrafficJam.UI
 
 		public void Initialize()
 		{
-			if (nodeType == null)
-			{
-				gameObject.SetActive(false);
-				return;
-			}
+            if (nodeType == null)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+            else if (nodeType != null)//pour l'initialisation suite à l'instance du niveau
+            {
+                if (LevelManager.Instance != null)
+                {
+                    if (nodeType.myName == "Traffic Lights")
+                    {
+                        count = LevelManager.Instance.levelSelected.numberOfTrafficLights;
+                    }
+                    else if (nodeType.myName == "Traffic Circle")
+                    {
+                        count = LevelManager.Instance.levelSelected.numberOfTrafficCircles;
+                    }
+                    else if (nodeType.myName == "Right Priority Road")
+                    {
+                        count = LevelManager.Instance.levelSelected.numberOfTrafficPriority;
+                    }
+                }
+            }
 
 			if (count == -1)
 			{

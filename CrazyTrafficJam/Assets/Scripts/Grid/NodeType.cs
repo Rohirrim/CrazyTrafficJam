@@ -27,6 +27,7 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 		[SerializeField]
 		private GameObject assetMode;
 		public Color color;
+        public string myName;
 
 		public int Count => nodes.Count;
 		public bool Enable => nodes.Count > 0;

@@ -14,6 +14,8 @@ namespace IronSideStudio.CrazyTrafficJam
         [Range(1, 100)]
         public int defeatPercentage = 30;
         public float debugPercentage;
+        [Range(10, 100)]
+        public int minimumCarsNumber = 10;
 
         [HideInInspector]
         public List<IronSideStudio.CrazyTrafficJam.Car.Driver> allCars;
@@ -31,6 +33,12 @@ namespace IronSideStudio.CrazyTrafficJam
         {
             //victoryPannel.SetActive(false);
             defeatPannel.SetActive(false);
+
+            if(LevelManager.Instance != null)
+            {
+                defeatPercentage = (int)LevelManager.Instance.levelSelected.defeatPercentage;
+                minimumCarsNumber = LevelManager.Instance.levelSelected.minimumCarsNumber;
+            }
         }
 
         private void LateUpdate()
@@ -41,9 +49,16 @@ namespace IronSideStudio.CrazyTrafficJam
 
         private void CheckDefeat()
         {
-            if(percentageOfStoppedDriver() >= defeatPercentage)
+            if(allCars.Count < minimumCarsNumber)
             {
-                GameOver();
+                return;
+            }
+            else
+            {
+                if (percentageOfStoppedDriver() >= defeatPercentage)
+                {
+                    GameOver();
+                }
             }
         }
 
@@ -81,7 +96,7 @@ namespace IronSideStudio.CrazyTrafficJam
 
         public void GameOver()
         {
-            TimeManager.Instance.StopTimer();
+            TimeManager.Instance.SetTimeScale(0);
             defeatPannel.SetActive(true);
         }
 

@@ -44,7 +44,8 @@ namespace IronSideStudio.CrazyTrafficJam.Car
 			if (node == null || !MoveOnIntersection())
 				return;
 			timer = 0f;
-		}
+            isStopped = false;
+        }
 
 		private void Patience()
 		{

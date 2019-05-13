@@ -9,7 +9,8 @@ namespace IronSideStudio.CrazyTrafficJam.Menu
 	{
 		public void LaunchGame()
 		{
-			UnityEngine.SceneManagement.SceneManager.LoadScene(Constante.Scene.Gameplay);
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(Constante.Scene.Gameplay);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 		}
 
 		public void QuitGame()

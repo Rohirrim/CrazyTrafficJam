@@ -45,9 +45,9 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 				}
 			}
 
-			randPathern = Random.Range(0, allPathern.Length);
-			useNode = grid.GetNode(pos);
-		}
+            randPathern = Random.Range(0, allPathern.Length);//obtient un pathern random parmi la liste
+            useNode = grid.GetNode(pos);//permet de créer un pathern à partir d'une position donnée par le node
+        }
 
 		void IUpdatable.MUpdate()
 		{
@@ -76,10 +76,26 @@ namespace IronSideStudio.CrazyTrafficJam.Grid
 			}
 		}
 
-		private void TimePass(SDayInfo dayInfo)
+		private void TimePass(SDayInfo dayInfo)//La création de pathern se fait ICI
 		{
-			allPathern[randPathern].Apply(useNode.transform.position);
-			randPathern = -1;
+            if (LevelManager.Instance == null)
+            {
+                allPathern[randPathern].Apply(useNode.transform.position);//Créé le pathern puis réinitialise le randNumber
+                randPathern = -1;
+            }
+            else
+            {
+                if (TimeManager.Instance.day == 0)//Si c'est au lancement de la partie
+                {
+                    LevelManager.Instance.levelSelected.startingPathern.Apply(useNode.transform.position);//Se fait à l'initialisation uniquement
+                    randPathern = -1;//On réinitialise pour la suite du niveau
+                }
+                else
+                {
+                    allPathern[randPathern].Apply(useNode.transform.position);//Créé le pathern puis réinitialise le randNumber
+                    randPathern = -1;
+                }
+            }
 		}
 	}
 }
